@@ -25,7 +25,7 @@ import { UpcomingProjects } from '@/constants';
 
 const SaleConfig: Record<string, boolean> = {
      "Zesh AI Layer": false,
-     "KeetaAI": true,
+     "KeetaAI": false,
      "Friendly Giant AI": false,
 };
 
@@ -1504,6 +1504,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                              height={80}
                                              alt={name}
                                              src={icon}
+                                             priority
                                              className="w-24 h-24 object-cover rounded-full"
                                              />
                                         </div>

@@ -96,7 +96,7 @@ const Mobilenavsheet = ({ open, setOpen }: MobilenavsheetProps) => {
               });
             }
           }}
-          className="fixed bottom-0 left-0 right-0 z-50 w-full rounded-t-2xl max-h-[90vh] [@media(min-width:400px)]:min-h-[80vh]  px-4 shadow-3xl bg-background outline-none"
+          className="fixed bottom-0 left-0 right-0 z-50 w-full rounded-t-2xl min-h-[80vh]  px-4 shadow-3xl bg-background outline-none"
         >
             <Dialog.Title asChild>
                     <span className="sr-only">Mobile Navigation</span>
