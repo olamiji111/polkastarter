@@ -17,32 +17,29 @@ const Mobilenavsheet = ({ open, setOpen }: MobilenavsheetProps) => {
   const y = useMotionValue(0);
   const sheetRef = useRef<HTMLDivElement | null>(null);
   const [sheetHeight, setSheetHeight] = useState(0);
-  useEffect(() => {
-     if (open) {
-       y.set(0);
-       requestAnimationFrame(() => {
-         if (sheetRef.current) {
-           setSheetHeight(sheetRef.current.offsetHeight);
-         }
-       });
-     }
- 
-     const unsubscribe = y.on('change', (v) => {
-       // Optional: monitor y changes
-     });
- 
-     const handleResize = () => {
-       if (window.innerWidth >= 768) {
-         setOpen(false);
-       }
-     };
- 
-     window.addEventListener('resize', handleResize);
-     return () => {
-       unsubscribe();
-       window.removeEventListener('resize', handleResize);
-     };
-   }, [open]);
+  const sheetHeightRef = useRef(0); // ✅
+
+   useEffect(() => {
+    if (open) {
+      y.set(0);
+      requestAnimationFrame(() => {
+        if (sheetRef.current) {
+          sheetHeightRef.current = sheetRef.current.offsetHeight;
+        }
+      });
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [open]);
  
    const handleDismiss = () => {
      animate(y, window.innerHeight, {
@@ -51,47 +48,56 @@ const Mobilenavsheet = ({ open, setOpen }: MobilenavsheetProps) => {
      });
    };
 
-   const handleDelayedNavigation = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, 
-    href: string,
-  ) => {
-
+  
+   const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    setTimeout(() => {
-      router.push(href)
-      handleDismiss();
-   }, 2000)
-  }
+    handleDismiss(); // closes the sheet
+    setTimeout(() => router.push(href), 250); // give animation 250ms
+  };
  
   return (
      <Dialog.Root open={open} onOpenChange={setOpen}>
      <Dialog.Portal>
        <Dialog.Overlay
-         className="fixed inset-0 z-40 bg-black/40 outline-none transition-opacity"
+         className="fixed inset-0 z-40 bg-black/10 outline-none transition-opacity"
          onClick={handleDismiss}
        />
        <Dialog.Content asChild forceMount>
-         <motion.div
-           ref={sheetRef}
-           style={{ y }}
-           drag="y"
-           dragDirectionLock
-           dragConstraints={{ top: 5 }}
-           dragElastic={0.05}
-           dragMomentum={false}
-           onDragEnd={(e, info) => {
-             if (info.offset.y > (sheetHeight || 0) * 0.5) {
-               handleDismiss();
-             } else {
-               animate(y, 0, {
-                 type: 'spring',
-                 stiffness: 300,
-                 damping: 40,
-               });
-             }
-           }}
-               className="fixed bottom-0 left-0 right-0 z-50 w-full rounded-t-2xl min-h-[60vh]  px-4  shadow-2xl bg-background transition-transform outline-none"
-          >
+       <motion.div
+          ref={sheetRef}
+          style={{ y }}
+          drag="y"
+          dragConstraints={{ top: 0, bottom: 0 }}
+          dragElastic={0.1} // small elasticity, smooth but tight
+          dragMomentum={false}
+          onDrag={(e, info) => {
+            // Follow finger directly without delay
+            if (info.offset.y > 0) y.set(info.offset.y);
+            else y.set(info.offset.y * 0.3);
+          }}
+          onDragEnd={(_, info) => {
+            const height = sheetHeightRef.current || 0;
+            const shouldDismiss =
+              info.offset.y > height * 0.25 || info.velocity.y > 1000;
+
+            if (shouldDismiss) {
+              animate(y, window.innerHeight, {
+                duration: 0.18, // ⚡ super quick dismiss
+                ease: 'easeOut',
+                onComplete: () => setOpen(false),
+              });
+            } else {
+              animate(y, 0, {
+                type: 'spring',
+                stiffness: 400, // ⚡ faster reaction
+                damping: 30,
+                mass: 0.4,
+                velocity: info.velocity.y,
+              });
+            }
+          }}
+          className="fixed bottom-0 left-0 right-0 z-50 w-full rounded-t-2xl max-h-[90vh] [@media(min-width:400px)]:min-h-[80vh]  px-4 shadow-3xl bg-background outline-none"
+        >
             <Dialog.Title asChild>
                     <span className="sr-only">Mobile Navigation</span>
             </Dialog.Title>
@@ -106,7 +112,7 @@ const Mobilenavsheet = ({ open, setOpen }: MobilenavsheetProps) => {
                          key={link.route}
                          href={link.route}
                          className={` py-1  mobilenav-link ${isActive ? 'mobilenav-link-active' : ''}`}
-                         onClick={() => setOpen(false)}
+                         onClick={(e) => handleNavigation(e, link.route)}
                     > 
                          {link.label} 
                     </Link> 
@@ -114,16 +120,16 @@ const Mobilenavsheet = ({ open, setOpen }: MobilenavsheetProps) => {
                );
                })}
 
-               <div className="flex w-full py-6 gap-x-24 items-start px-2">
+               <div className="flex w-full py-6 gap-x-12 items-start px-2">
                     {popoverSections.map((section) => (
-                         <div key={section.title} className="flex flex-col items-start  space-x-6">
-                              <p className='font-[500]  mb-1 px-1 text-[15px]'> {section.title} </p>
-                                   <div className="flex flex-col gap-1">
+                         <div key={section.title} className="flex flex-col items-start  space-x-6 w-full">
+                              <p className='font-[600]  mb-1 px-1 text-[15px]'> {section.title} </p>
+                                   <div className="flex flex-col gap-1 w-full">
                                    {section.links.map(({label}) => (
                                         <a 
                                              key={label}
                                              href="/"
-                                             className='popover-link tracking-wide leading-snug py-1 '
+                                             className=' w-[150%] text-[var(--type-2)] popover-link tracking-wide '
                                         >
                                              {label}
                                         </a> 

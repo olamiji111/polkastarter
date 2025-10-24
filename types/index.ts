@@ -10,7 +10,7 @@ export interface Project {
 
 export interface DashboardProject {
      title: string;
-     img:string;
+     imgPath:string;
 }
    
 export interface PolkaRow {
@@ -36,7 +36,7 @@ export type AllowlistRow = {
           date:string;
           time:string;
      }
-     Status: string
+     Status: string;
 };
 
 export type EndedIn = {
@@ -47,7 +47,6 @@ export type EndedIn = {
 export type ProjectTableRow = {
      "Project name": Project;
      Type: string;
-     Participants: string;
      "Raising Goal": string;
      "ATH since IDO": string;
      "Ended In": EndedIn;

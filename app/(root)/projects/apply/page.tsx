@@ -1,6 +1,5 @@
 'use client';
 
-
 import React, {useEffect, useState, useRef} from 'react'
 import {useResolvedTheme} from "@/components/shared/theme-context"
 import { useTheme } from 'next-themes';
@@ -14,14 +13,11 @@ import {getNames} from "country-list";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from '@/components/ui/button';
-import { CheckCircle2Icon , XCircle } from 'lucide-react';
+
 import {z} from "zod";
 import {toast} from "sonner";
-import { Description } from '@radix-ui/react-dialog';
 
 
-
-//get all countries List
 const countries = getNames();
 const emailSchema = z.string().email("Enter a valid email address");
 
@@ -103,8 +99,8 @@ const handleSubmit = async (e: React.FormEvent) => {
         description: "",
         duration:5000,
         icon: (
-          <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center">
-            <Check className="text-primary w-3 h-3"  strokeWidth={2}/>
+          <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center border  border-[var(--border-1)]">
+            <Check className="text-primary w-3 h-3"  strokeWidth={2.5}/>
           </div>
         ), 
         style:{
@@ -127,8 +123,8 @@ const handleSubmit = async (e: React.FormEvent) => {
       description:"",
       duration: 5000,
       icon: (
-        <div className="w-5 h-5 bg-red-300 rounded-full flex items-center justify-center">
-          <XCircle className="text-primary w-4 h-4" strokeWidth={2}/>
+        <div className="w-5 h-5 bg-red-400 rounded-full flex items-center justify-center border border-[var(--border-1)]">
+          <XCircle className="text-primary w-4 h-4" strokeWidth={2.5}/>
         </div>
       ),
   
@@ -171,17 +167,35 @@ const submitDisabled = (formData.name && formData.email && formData.country);
               <div className='mt-8 flex flex-col gap-4 w-full justify-center'>
                 <div className='flex items-center flex-row justify-between gap-4 '>
                   <p className='capitalize text-primary text-[18px] font-[400] whitespace-nowrap'> Total raise</p>
-                  <div className='border-[0.8px] mt-1 w-full border-dashed border-primary' />
+                  <hr
+                    className={`flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-center 
+                      ${resolvedTheme === "dark"
+                        ? "bg-[linear-gradient(90deg,#ffffff_30%,rgba(255,255,255,0)_0px)]"
+                        : "bg-[linear-gradient(90deg,#000000_30%,rgba(0,0,0,0)_0px)]"
+                      }`}
+                  />
                   <p className='text-[18px] font-[400]'> {FundRaiseValue} </p>
                 </div>
-                <div className='flex items-center flex-row justify-between gap-4 '>
+                <div className='flex items-center flex-row justify-between gap-2 '>
                   <p className='capitalize text-primary text-[18px] font-[400] whitespace-nowrap'> Personal Allocation </p>
-                  <div className='border-[0.8px] mt-1 w-full border-dashed border-primary' />
+                  <hr
+                    className={`flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-center 
+                      ${resolvedTheme === "dark"
+                        ? "bg-[linear-gradient(90deg,#ffffff_30%,rgba(255,255,255,0)_0px)]"
+                        : "bg-[linear-gradient(90deg,#000000_30%,rgba(0,0,0,0)_0px)]"
+                      }`}
+                  />
                   <p className='text-[18px] font-400]'> {maxAllocation} </p>
                 </div>
                 <div className='flex items-center flex-row justify-between gap-4 '>
                   <p className='capitalize text-primary text-[18px] font-[400] whitespace-nowrap'> Token Sale Date </p>
-                  <div className='border-[0.8px] mt-1 w-full border-dashed border-primary' />
+                  <hr
+                    className={`flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-center 
+                      ${resolvedTheme === "dark"
+                        ? "bg-[linear-gradient(90deg,#ffffff_30%,rgba(255,255,255,0)_0px)]"
+                        : "bg-[linear-gradient(90deg,#000000_30%,rgba(0,0,0,0)_0px)]"
+                      }`}
+                  />
                   <p className='text-[17px] font-[400] whitespace-nowrap'> {dateState} </p>
                 </div>
               </div>
@@ -207,7 +221,7 @@ const submitDisabled = (formData.name && formData.email && formData.country);
                     focus:shadow-[0_0_0_1px_#00BBFF33]
                     focus:outline-none
                     focus:ring-4 focus:ring-[#00BBFF]/12
-                    focus:border-[#00BBFF]/50 border  p-3 rounded-lg bg-inherit'
+                    focus:border-[#00BBFF]/50 border  p-3 rounded-lg bg-transparent'
                     value={formData.name}
                     onChange={handleChange}
                   />
@@ -319,7 +333,7 @@ const submitDisabled = (formData.name && formData.email && formData.country);
                     type="text"
                     value="0x104FF5a76241968b576bA01Dd"
                     readOnly
-                    className='  ease-in-out text-[var(--type-3)]
+                    className='ease-in-out text-[var(--type-3)]
                     border p-3 rounded-lg bg-inherit text-[15px] sm:text-[16px]'
                   />
                 </div>

@@ -8,10 +8,11 @@ export const metadata: Metadata = {
   description:
     "Polkastarter is the Leading Web3 Fundraising Platform. Empowering Web3 Projects to launch decentralized and fixed swap token pools",
   icons: {
-    icon: [
-     
-      { url: "/favicon-new.ico", type: "image/x-icon" },
-    ],
+    icon: [{ url: "/favicon-new.ico", type: "image/x-icon" }],
+  },
+  viewport: "width=device-width, initial-scale=1",
+  other: {
+    "theme-color": "#4363ff", 
   },
 };
 

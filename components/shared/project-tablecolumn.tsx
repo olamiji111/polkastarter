@@ -5,7 +5,6 @@ import { Project, EndedIn, ProjectTableRow } from "@/types";
 
 const clickableHeaders: (keyof ProjectTableRow)[] = [
   "Project name",
-  "Participants",
   "Raising Goal",
   "ATH since IDO",
   "Ended In",
@@ -64,23 +63,7 @@ export const projectsTableColumn = (
   },
 
   // Participants
-  {
-    accessorKey: "Participants",
-    header: () => {
-      const isActive = activeHeader === "Participants";
-      return (
-        <button
-          onClick={() => onHeaderClick("Participants")}
-          className={`text-[13px] hover:text-[#0095cc] min-w-[50px] cursor-pointer transition-all flex items-center 
-            ${isActive ? "text-[#0095cc]" : "text-[var(--type-2)]"} `}
-        >
-          Participants
-          {isActive && <ChevronDown className="w-4 h-4 text-[#0095cc] flex" />}
-        </button>
-      );
-    },
-    cell: ({ getValue }) => <span className="text-[17px] font-[600] px-8">{getValue() as string}</span>,
-  },
+ 
 
   // Raising Goal
   {

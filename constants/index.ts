@@ -254,7 +254,7 @@ export const polsEvent = [
 
      "Exchange Listings",
 
-     "Switching Liquidity to cbETH Creating Native Buy Power for POLS",
+     "Switching Liquidity to cbETH: Creating Native Buy Power for POLS",
 
      "Hackathons",
 
@@ -730,12 +730,12 @@ export const  dashboardAllowlistTable = [
                imgPath:"/assets/images/allowlisted-projects/keetai.webp"
           },
           "Sale Date": {
-               date:"octomber 30th 2025",
+               date:"october 30th 2025",
                time:"4:00 AM UTC"
           },
                
 
-          Status:"Allowlisted",
+          Status:"Not Applied",
 
          
      },
@@ -784,6 +784,25 @@ export const dashboardHelpQuestions = [
 
 
 export const UpcomingProjects = [
+
+     {
+          name: "Friendly Giant AI",
+          backgroundImage: "/assets/images/projects/frindly-giant-cover.webp",
+          icon: "/assets/images/projects/friendly-giant-icon.webp",
+          cointypeIcon: "base", 
+          about: "First sentient AI-Agent live on Roblox, Web2 and Web3. Built on Base and DeepSeek",
+          FundRaiseValue: "$200,000",
+          maxAllocation: "TBA",
+          status: "ALLOWLIST OPEN",
+          date: "november 9th 2025",
+          time:"4:00 PM UTC",
+          dateStatement: "Allowlist closes in",
+          tokenPrice:"$0.00625",
+          RaiseToken:"USDC on Ethereum",
+          participants:12,
+          salePercentage: "18%"
+   
+        },
      {
           name: "MemeMarket",
           backgroundImage: "/assets/images/projects/meme-cover.webp",
@@ -802,24 +821,7 @@ export const UpcomingProjects = [
           salePercentage: "18%"
    
         },
-     {
-       name: "Friendly Giant AI",
-       backgroundImage: "/assets/images/projects/frindly-giant-cover.webp",
-       icon: "/assets/images/projects/friendly-giant-icon.webp",
-       cointypeIcon: "base", 
-       about: "First sentient AI-Agent live on Roblox, Web2 and Web3. Built on Base and DeepSeek",
-       FundRaiseValue: "$200,000",
-       maxAllocation: "TBA",
-       status: "ALLOWLIST OPEN",
-       date: "October 29th 2025",
-       time:"4:00 PM UTC",
-       dateStatement: "Allowlist closes in",
-       tokenPrice:"$0.00625",
-       RaiseToken:"USDC on Ethereum",
-       participants:12,
-       salePercentage: "18%"
-
-     },
+    
      {
           name: "KeetaAI",
           backgroundImage: "/assets/images/projects/keetaibg.webp",
@@ -877,25 +879,7 @@ export const FundedProjects = [
 
 
 export const  projectTableElement = [
-     {
-          "Project name": {
-               title:"ByBarter",
-               currency:"$BYB",
-               imgPath:"/assets/images/allowlisted-projects/Byparter.webp"
-          },
-          Type:"Token Sale",
-
-          Participants:"16",
-
-          "Raising Goal":"$350,000",
-          "ATH since IDO":"TBA",
-          "Ended In": {
-               date:"October 7th 2025",
-               time:"9:00AM - UTC"
-          },
-          chains:Ethereum,
-
-     },
+     
      {
           "Project name": {
                title:"Project Merlin ",

@@ -28,13 +28,31 @@ const CoinSelect = () => {
   const handleSelect = (coin: { title: string; icon: any ; address:string}) => {
     setSelectedCoin(coin);  
   };
-  const handleCopyAddress = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    navigator.clipboard.writeText(selectedCoin.address);
+ 
+  const handleCopyAddress = async (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    try {
+      // ✅ Try the standard Clipboard API first
+      await navigator.clipboard.writeText(selectedCoin.address);
+    } catch (err) {
+      // 🧩 Fallback for iOS/Safari/Android WebViews
+      const textArea = document.createElement("textarea");
+      textArea.value = selectedCoin.address;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand("copy");
+      } catch (err2) {
+        console.error("Fallback copy failed:", err2);
+      }
+      document.body.removeChild(textArea);
+    }
   
-    // Get the position of the clicked address container
-    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-  
-    // Show toast at coordinates above the element
+    // ✅ Show toast feedback
     toast.custom(
       (t) => (
         <div
@@ -42,31 +60,19 @@ const CoinSelect = () => {
             ${resolvedTheme === "dark" ? "bg-zinc-800 text-white" : "bg-white text-black"}`}
         >
           <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center">
-            <Check className="text-primary w-3 h-3"  strokeWidth={2}/>
+            <Check className="text-primary w-3 h-3" strokeWidth={2} />
           </div>
-          <span className="text-xs font-[600] whitespace-normal">{selectedCoin.title} address copied!</span>
+          <span className="text-xs font-[600] whitespace-normal">
+            {selectedCoin.title} address copied!
+          </span>
         </div>
       ),
       {
         duration: 2000,
-        // Position relative to the element
-        position: "top-center", // required by react-hot-toast but we override transform
-        style: {
-          position: "fixed",
-          left: `100px`, // center horizontally
-          top: `${rect.top - 50}px`, // 40px above the element
-          transform: "translateX(-50%)",
-          zIndex: 9999,
-          width:250,
-          height:10
-        },
+        position: "top-center",
       }
     );
   };
-  
-   if (!mounted) {
-     return null;
-   }
  
   
 

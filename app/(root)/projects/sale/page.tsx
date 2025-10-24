@@ -15,6 +15,7 @@ import PolkastarterIcon from '@/components/icons/polkastarter-icon';
 import { UpcomingProjectInfo } from '@/constants/projects';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertIcon } from '@/components/icons/icons';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent,  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 
 type SingleProject = {
@@ -54,7 +55,7 @@ const Sale =() =>  {
   const selectedProject = useProjectStore((state) => state.selectedProject);
   const [amount, setAmount] = useState("0")
   const [isTyping, setIsTyping] = useState(false);
-  const [hasClickedContribute, setHasClickedContribute] = useState<boolean>(false);
+  
   const TIERS = [
     { name: 'Starter', pols: 1000 },
     { name: 'Booster', pols: 5000 },
@@ -62,6 +63,7 @@ const Sale =() =>  {
   ];
   const [userTier, setUserTier] = useState<{ name: string; pols: number } | null>(null);
   const [polsBalance, setPolsBalance] = useState< number | string>(5)
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     const randomTier = TIERS[Math.floor(Math.random() * TIERS.length)];
@@ -129,13 +131,14 @@ const handleSubmit = () => {
 }
 
 const handleContributeClick = () => {
-  setHasClickedContribute(true);
+ setOpenDialog(true);
   
 };
 
 const handleAuthorizeClick = () => {
   // Logic for wallet authorization goes here
   console.log("Authorize wallet from connected provider");
+  setOpenDialog(false);
 };
 
 const submitDisabled = (Number(amount.replace(/,/g, "")) > 0 && polsBalance !== 0 );
@@ -204,17 +207,35 @@ if (userTier) {
               <div className='mt-8 flex flex-col gap-4 w-full justify-center'>
                 <div className='flex items-center flex-row justify-between gap-4 '>
                   <p className='capitalize text-primary text-[18px] font-[400] whitespace-nowrap'> Total raise</p>
-                  <div className='border-[0.8px] mt-1 w-full border-dashed border-primary' />
+                  <hr
+                    className={`flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-center 
+                      ${resolvedTheme === "dark"
+                        ? "bg-[linear-gradient(90deg,#ffffff_30%,rgba(255,255,255,0)_0px)]"
+                        : "bg-[linear-gradient(90deg,#000000_30%,rgba(0,0,0,0)_0px)]"
+                      }`}
+                  />
                   <p className='text-[18px] font-[400]'> {FundRaiseValue} </p>
                 </div>
                 <div className='flex items-center flex-row justify-between gap-4 '>
                   <p className='capitalize text-primary text-[18px] font-[400] whitespace-nowrap'>Price per token </p>
-                  <div className='border-[0.8px] mt-1 w-full border-dashed border-primary' />
+                  <hr
+                    className={`flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-center 
+                      ${resolvedTheme === "dark"
+                        ? "bg-[linear-gradient(90deg,#ffffff_30%,rgba(255,255,255,0)_0px)]"
+                        : "bg-[linear-gradient(90deg,#000000_30%,rgba(0,0,0,0)_0px)]"
+                      }`}
+                  />
                   <p className='text-[18px] font-[400]'> {tokenPrice} </p>
                 </div>
                 <div className='flex items-center flex-row justify-between gap-4 '>
                   <p className='capitalize text-primary text-[18px] font-[400] whitespace-nowrap'> Raise token </p>
-                  <div className='border-[0.8px] mt-1 w-full border-dashed border-primary' />
+                  <hr
+                    className={`flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-center 
+                      ${resolvedTheme === "dark"
+                        ? "bg-[linear-gradient(90deg,#ffffff_30%,rgba(255,255,255,0)_0px)]"
+                        : "bg-[linear-gradient(90deg,#000000_30%,rgba(0,0,0,0)_0px)]"
+                      }`}
+                  />
                   <p className='text-[17px] font-[400] whitespace-nowrap'> {RaiseToken} </p>
                 </div>
               </div>
@@ -284,8 +305,8 @@ if (userTier) {
                           type="text"
                           value="0x104FF5a76241968b576bA01Dd"
                           readOnly
-                          className='relative  ease-in-out text-[var(--type-3)]
-                           p-3 border   rounded-lg bg-inherit text-[15px]  sm:text-[16px] font-[600] '
+                          className='relative  ease-in-out text-primary
+                           p-3 border   rounded-lg bg-inherit text-[15px]  sm:text-[16px] font-bold '
                       />
                   </div>
                   <div className='mt-8 px-8 pb-2 flex flex-col gap-3 items-start '>
@@ -294,7 +315,7 @@ if (userTier) {
                        <div key={idx} className='flex h-6 min-w-full flex-row justify-between items-center gap-2'>
                           <p className='font-[600] text-primary  text-[14px] shrink-0 '> {item.key} </p>
                           <div className='border-[0.8px] mt-1 w-full border-dashed ' />
-                          <p className='  text-[var(--type-2)] shrink-0 break-words tracking-tight font-[500] text-[14px] text-right'> {item.value} </p>
+                          <p className='  text-[var(--type-2)] shrink-0 truncate tracking-tight font-[500] text-[14px] text-right'> {item.value} </p>
                       
                       </div>
                     
@@ -310,24 +331,58 @@ if (userTier) {
               </div>
             </div>
 
-            {hasClickedContribute && (
-                <div className={ ` relative flex mt-6 items-center justify-center  gap-3.5 rounded-lg border py-3 px-4 text-[var(--type-1)] ${resolvedTheme === 'dark' ? 'text-gray-400 bg-zinc-800' : 'bg-gray-200/40'}`} role='alert'>
-                  <div className='flex gap-2 items-center'>
-                    <AlertIcon className='shrink-0 text-[color:var(--color-primary-type)] size-6'/>
-                    <p className='text-[13px] font-[600] ml-2 text-[var(--type-1)] leading-6'>
-                      You may either manually transfer your contributions  to your funding wallet address listed in your profile,  
-                      <br />
-                      To ensure you use the correct wallet, select your coin type (<strong>Ethereum</strong> or <strong>Binance</strong>) to view the corresponding address.
-                      <br/>
-                      or click <strong>“Authorize from Wallet”</strong> to authorize the transaction directly from allowlisted wallet. 
-                    </p>
+            <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
+              <AlertDialogContent
+                className={`max-w-lg border ${
+                  resolvedTheme === "dark"
+                    ? "bg-zinc-900 border-zinc-700"
+                    : "bg-white border-zinc-200"
+                }`}
+              >
+                <AlertDialogHeader>
+                  <div className="flex gap-2 items-center">
+                    <AlertIcon className="shrink-0 text-[color:var(--color-primary-type)] size-6" />
+                    <AlertDialogTitle className="text-[16px] font-semibold text-primary">
+                      Contribution Information
+                    </AlertDialogTitle>
                   </div>
-                </div>
-              )}
+                </AlertDialogHeader>
+
+                <AlertDialogDescription asChild>
+                  <p className="text-[13px] font-[600] mt-3 text-[var(--type-1)] leading-6">
+                    You may either manually transfer your contributions to your funding wallet address listed in your profile,  
+                    <br />
+                    To ensure you use the correct wallet, select your coin type (<strong>Ethereum</strong> or <strong>Binance</strong>) to view the corresponding address.
+                    <br />
+                    or click <strong>“Authorize from Wallet”</strong> to authorize the transaction directly from your allowlisted wallet.
+                  </p>
+                </AlertDialogDescription>
+
+                <AlertDialogFooter className="mt-6">
+                  <AlertDialogCancel
+                    onClick={() => setOpenDialog(false)}
+                    className={`px-4 py-2 rounded-md font-[600] ${
+                      resolvedTheme === "dark"
+                        ? "bg-zinc-800 text-zinc-300"
+                        : "bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    Close
+                  </AlertDialogCancel>
+
+                  <button
+                    onClick={handleAuthorizeClick} // your logic here
+                    className={`px-4 py-2 rounded-md font-[600] bg-primary text-background hover:bg-primary/90`}
+                  >
+                    Authorize from Wallet
+                  </button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <div aria-label='submit button' className=' relative flex items-center justify-center'>
-              {!hasClickedContribute ? (
+             
                 <Button
-                  className={`relative px-3 sm:px-7 sm:rounded-xl rounded-lg py-6 font-[600] text-[14px] duration-200 transition-all border border-transparent text-center bg-primary text-background cursor-pointer ${
+                  className={`relative px-3   rounded-lg py-6 font-[600] text-[14px] duration-200 transition-all border border-transparent text-center bg-primary text-background cursor-pointer ${
                     !submitDisabled ? resolvedTheme === "dark" ? "bg-zinc-600 text-zinc-300" : "bg-zinc-200 text-[var(--type-2)]" : "bg-primary text-background cursor-pointer"
                   }`}
                   onClick={handleContributeClick}
@@ -335,14 +390,6 @@ if (userTier) {
                 >
                   Desposit contribution
                 </Button>
-              ) : (
-                <Button
-                  className="relative mt-7 px-3 sm:px-7 sm:rounded-xl rounded-lg py-6 font-[600] text-[14px]  duration-200 transition-all border border-transparent text-center bg-primary text-background cursor-pointer"
-                  onClick={handleAuthorizeClick}
-                >
-                    Authorize from Wallet
-                </Button>
-              )}
             </div>
            </div>
     </div>

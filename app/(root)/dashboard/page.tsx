@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {AlertIcon,  Info, PolsDiamonFlag, PolsPower, Gradient, QuestionPlay} from "@/components/icons/icons"
 import { useTheme } from 'next-themes';
 import { useRouter } from "next/navigation";
@@ -24,16 +24,38 @@ const Dashboard = () => {
   const router = useRouter();
   const [isLoggedIn , setIsLoggedIn] = useState<boolean>(true);
   const [isWalletetConnected , setIsWalletConnected] = useState<boolean>(true);
+
+  const [connectedAddress, setConnectedAddress]  = useState<string>("0xABCDEF9876543210"); 
+  
   const [transform, setTransform] = useState(
     "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)"
   );
 
+  const walletAllowlistMap: Record<string, string[]> = {
+    "0x1234567890abcdef": ["MemeMarket"], 
+    "0xABCDEF9876543210": ["Friendly Giant AI"], 
+  };
+
+
+   const dynamicAllowlistData = useMemo(() => {
+    return dashboardAllowlistTable.map((item) => {
+      const projectName = item["Project name"].title;
+      const isAllowlisted = walletAllowlistMap[connectedAddress]?.includes(projectName);
+      return {
+        ...item,
+        Status: isAllowlisted ? "Allowlisted" : item.Status,
+      };
+    });
+  }, [connectedAddress]);
+
   const table = useReactTable({
-    data: dashboardAllowlistTable as AllowlistRow[],
+    data: dynamicAllowlistData as AllowlistRow[],
     columns: dashboardAllowlistColumns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
+ 
 
+  
 
   if (!mounted) {
 
@@ -390,24 +412,31 @@ const Dashboard = () => {
                     </TableBody>
                   ) : (
                     <TableBody>
-                      {table.getRowModel().rows.map((row, index) => (
-                        <TableRow
-                          key={row.id}
-                          className={`  cursor-pointer  ${resolvedTheme === "dark" ? "bg-[#18181b] hover:bg-zinc-800" : "bg-white hover:bg-zinc-100" }  `}
-                        >
-                          {row.getVisibleCells().map((cell) => (
-                            <TableCell
-                              key={cell.id}
-                              className={`  border-separate   ${
-                              cell.column.id === "Project name" ? "min-w-[400px]" : "px-8  min-w-[160px]" } 
-                                ${index === 2 ? "" : "border-b"}
+                      {table.getRowModel().rows.map((row, index) => {
+                          const projectTitle = row.original["Project name"].title;
+                          return (
+                            <TableRow
+                              key={row.id}
+                              onClick={() => router.push(`/projects/${encodeURIComponent(projectTitle)}`)}
+                              className={`cursor-pointer transition-colors duration-200 ${
+                                resolvedTheme === "dark"
+                                  ? "bg-[#18181b] hover:bg-zinc-800"
+                                  : "bg-white hover:bg-zinc-100"
                               }`}
-                        >
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                         </TableCell>
-                        ))}
-                      </TableRow>
-                     ))}
+                            >
+                              {row.getVisibleCells().map((cell) => (
+                                <TableCell
+                                  key={cell.id}
+                                  className={`  ${
+                                    cell.column.id === "Project name" ? "min-w-[400px]" : "px-8 min-w-[160px]"
+                                  } ${index === 3 ? "" : "border-b"}`}
+                                >
+                                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          );
+                        })}
                     </TableBody>
                   
                   )}

@@ -304,8 +304,7 @@ export const UpcomingProjectInfo = [
                     "Initial Token Circulation":"16,260,000",
                     "Fully Diluted Valuation":"$12,000,000",
                     "Total Supply":"1,000,000,000",
-                    "Token Distribution Time":"November 5th 2025, 5:30 PM - UTC",
-                    "Vesting Schedule": "30% TGE Unlock, 1 month lock, 3 months linear vesting"
+                   
                }
 
           }
@@ -482,7 +481,7 @@ export const UpcomingProjectInfo = [
                     "Initial Token Circulation":"172,000,000",
                     "Fully Diluted Valuation":"$5,000,000",
                     "Total Supply":"800,000,000",
-                    "Vesting Schedule": "50% at TGE, 3 months linear"
+                   
                }
           }
      },
@@ -671,8 +670,7 @@ export const UpcomingProjectInfo = [
                     "Initial Token Circulation":"470,062,500",
                     "Fully Diluted Valuation":"$2,187,500",
                     "Total Supply":"1,250,000,000",
-                    "Token Distribution Time":"October 27th 2025, 4:00 PM - UTC",
-                    "Vesting Schedule": "50% TGE, 3 months"
+                   
                },
 
           }
@@ -965,8 +963,7 @@ export const UpcomingProjectInfo = [
                     "Initial Token Circulation":"285,940,000",
                     "Fully Diluted Valuation":"$1,107,300",
                     "Total Supply":"900,000",
-                    "Token Distribution Time":"October 30th 2025, 2:30 PM - UTC",
-                    "Vesting Schedule": "50% TGE, 3 months"
+                   
                }
 
           }   

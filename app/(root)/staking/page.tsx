@@ -11,19 +11,21 @@ const tabs = ["stake", "withdraw"] as const;
 type TabValue = (typeof  tabs)[number];
 import CoinSelect from '@/components/shared/coinselectpopover';
 import {useResolvedTheme} from "@/components/shared/theme-context"
+import { AlertDialog, AlertDialogCancel, AlertDialogContent,  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 
 const Staking = () => {
   const {resolvedTheme, mounted} = useResolvedTheme();
   const {theme} = useTheme();
   const [isLoggedIn , setIsLoggedIn] = useState<boolean>(false);
-  const [isWalletetConnected , setIsWalletConnected] = useState<boolean>(true);
+  const [isWalletetConnected , setIsWalletConnected] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState(false);
   const [amount, setAmount] = useState("0")
   const [activeTab, setActiveTab] = useState<TabValue>("stake")
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const indicatorRef = useRef<HTMLDivElement>(null);
   const [hasClickedContribute, setHasClickedContribute] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
  
 
@@ -65,6 +67,14 @@ const Staking = () => {
     setHasClickedContribute(true);
     
   };
+
+  const handleStakeClick = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleWithdrawalClick = () => {
+    console.log("withdrawal case clicked");
+  }
   
   const handleBlur = () => {
     setIsTyping(false);
@@ -104,7 +114,7 @@ const Staking = () => {
               before:bg-[url('/assets/images/surface-bitmap.png')] 
             `}
           >
-            <div className={`relative flex w-full border-b-[1.6px]   border-[var( --border-1)] items-center justify-between border-b px-5 py-4  ${resolvedTheme === 'dark' ? 'bg-zinc-950/70' : 'bg-white/60'}`}>
+            <div className={`relative flex w-full border-b-[1.6px]    items-center justify-between px-5 py-4  ${resolvedTheme === 'dark' ? 'bg-zinc-950/70' : 'bg-white/60'}`}>
               <h2 className='text-[var(--type-1)] text-[14px] sm:text-[17px] pr-4  whitespace-nowrap font-[600]'> Stake POLS </h2>
               <div className={`relative flex  rounded-full  border border-border-1 ${resolvedTheme === "dark" ? "bg-[#18181b]" : "bg-[#fafafa]"} p-0.5  w-fit`}>
                 <div className="flex relative ">
@@ -177,7 +187,7 @@ const Staking = () => {
                           Buy POLS
                       </Button>
                       ) : (
-                        <Button className={` relative border cursor-pointer duration-300 transition-all text-[13px] mt-4 font-[600] cursor-pointer rounded-3xl py-3 h-7 
+                        <Button className={` relative border  duration-300 transition-all text-[13px] mt-4 font-[600] cursor-pointer rounded-3xl py-3 h-7 
                                             ${resolvedTheme === 'dark' ? 'hover:bg-zinc-700 text-white bg-zinc-800 ' 
                                             : 'bg-white hover:bg-gray-50 text-black'}
                                           `}
@@ -233,30 +243,20 @@ const Staking = () => {
                       </React.Fragment> 
                     ))}
                   </div>
-                  {hasClickedContribute && (
-                    <div className={ ` relative flex mt-6 items-center justify-center  gap-3.5 rounded-lg border py-3 px-4 text-[var(--type-1)] ${resolvedTheme === 'dark' ? 'text-gray-400 bg-zinc-800' : 'bg-gray-200/40'}`} role='alert'>
-                      <div className='flex gap-2 items-center'>
-                        <AlertIcon className='shrink-0 text-[color:var(--color-primary-type)] size-6'/>
-                        <p className='text-[13px] font-[600] ml-2 text-[var(--type-1)] leading-6'>
-                          You may either manually deposit your stake  to your funding wallet address listed in your profile,  
-                          <br />
-                          To ensure you use the correct wallet, select your coin type (<strong>Ethereum</strong> or <strong>Binance</strong>) to view the corresponding address.
-                          <br/>
-                          or click <strong>“Authorize from Wallet”</strong> to authorize the transaction directly from allowlisted wallet. 
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  {!hasClickedContribute ? (
-                      <button className={` relative inline-flex items-center font-[500] mt-4  disabled:cursor-not-allowed 
-                                          bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] rounded-3xl py-3 text-[#18181b]
-                                          h-12 duration-200 outline-none rounded-full transition-all ease-in-out border justify-evenly whitespace-nowrap
+                    <button className={` relative inline-flex items-center font-[500] mt-4  disabled:cursor-not-allowed 
+                                          rounded-3xl py-3 text-[#18181b]
+                                          h-12 duration-200 outline-none transition-all ease-in-out border justify-evenly whitespace-nowrap
                                           focus-visible:ring-contrast focus-visible:ring-offset-[var(--background-1)] text-center border-transparent focus-visible:ring-offset-2
                                           leading-none disabled:border-transparent text-[17px]  px-7 w-full sans cursor-pointer 
+                                          ${activeTab === "stake" ? "bg-[var(--color-primary)]   hover:bg-[var(--color-primary-hover)]" : "bg-[var(--color-warning)] hover:bg-[var(--color-warning)]/90" }
                                           ${resolvedTheme === 'dark' ? 'disabled:text-zinc-400/80 disabled:bg-zinc-600/30 ' : 'disabled:text-zinc-400 disabled:bg-zinc-200'}`}
-                              
+                                         
                               disabled={!isWalletetConnected || !isAmountPositive}
-                              onClick={handleDepositClick}
+                              onClick={
+                                activeTab === "stake"
+                                  ? handleStakeClick 
+                                  : handleWithdrawalClick 
+                              }  
                       >
                           {activeTab === "stake"
                               ? isAmountPositive && isWalletetConnected
@@ -265,24 +265,60 @@ const Staking = () => {
                               : "Withdraw POLS"
                             }
                       </button> 
-                  ):(
-                    <button className={` relative inline-flex items-center font-[500] mt-4  disabled:cursor-not-allowed 
-                          bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] rounded-3xl py-3 text-[#18181b]
-                          h-12 duration-200 outline-none rounded-full transition-all ease-in-out border justify-evenly whitespace-nowrap
-                          focus-visible:ring-contrast focus-visible:ring-offset-[var(--background-1)] text-center border-transparent focus-visible:ring-offset-2
-                          leading-none disabled:border-transparent text-[17px]  px-7 w-full sans cursor-pointer mb-0 
-                          ${resolvedTheme === 'dark' ? 'disabled:text-zinc-400/80 disabled:bg-zinc-600/30 ' : 'disabled:text-zinc-400 disabled:bg-zinc-200'}`}
-        
-                          disabled={!isWalletetConnected || !isAmountPositive}
-                          onClick={handleDepositClick}
-                    >
-                     Authorize Wallet
                         
-                  </button> 
-                  )}   
                 </div>
-              </div>
-              <div className='flex flex-col gap-10 w-full '>
+                {/* Dialogue cases */}
+                <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <AlertDialogContent
+                      className={`max-w-lg border ${
+                        resolvedTheme === "dark"
+                          ? "bg-zinc-900 border-zinc-700"
+                          : "bg-white border-zinc-200"
+                      }`}
+                    >
+                      <AlertDialogHeader>
+                        <div className="flex gap-2 items-center">
+                          <AlertIcon className="shrink-0 text-[color:var(--color-primary-type)] size-6" />
+                          <AlertDialogTitle className="text-[16px] font-semibold text-primary">
+                            Authorize Staking
+                          </AlertDialogTitle>
+                        </div>
+                      </AlertDialogHeader>
+
+                      <AlertDialogDescription asChild>
+                        <p className="text-[13px] font-[600] mt-3 text-[var(--type-1)] leading-6">
+                          You may either manually deposit your stake to your funding wallet address listed in your profile,  
+                          <br />
+                          To ensure you use the correct wallet, select your coin type (<strong>Ethereum</strong> or <strong>Binance</strong>) to view the corresponding address.
+                          <br />
+                          or click <strong>“Authorize from Wallet”</strong> to authorize the transaction directly from your LoggedIn wallet.
+                        </p>
+                      </AlertDialogDescription>
+
+                      <AlertDialogFooter className="mt-6">
+                        <AlertDialogCancel
+                          onClick={() => setIsDialogOpen(false)}
+                          className={`px-4 py-2 rounded-md font-[600] ${
+                            resolvedTheme === "dark"
+                              ? "bg-zinc-800 text-zinc-300"
+                                    : "bg-gray-100 text-gray-700"
+                                }`}
+                              >
+                                Close
+                              </AlertDialogCancel>
+
+                              <button
+                                onClick={() => setIsDialogOpen(false)}
+                                className={`px-4 py-2 rounded-md font-[600]  bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-[#18181b] `}
+                              >
+                                Authorize from Wallet
+                              </button>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+              
+              <div className='flex flex-col gap-10 w-full  '>
                <div className='flex flex-col gap-5'>
                 <div className='flex flex-col gap-0.5 '>
                   <h2 className='__className_a17902  uppercase text-[var(--type-1)] whitespace-nowrap text-sm font-[600] w-full'> 
@@ -308,7 +344,7 @@ const Staking = () => {
                     <span className='opacity-60 text-4xl'>0</span>
                   </div>
                 </div>
-                <div className='flex h-6 w-auto flex-row items-center justify-between gap-3 min-w-[350px]'>
+                <div className='flex h-6 w-auto flex-row items-center justify-between gap-3 min-w-[350px] px-2'>
                     <p className='text-sm font-[500]  text-[(var(--type-1)] text-[15px] '> POLS Staked</p>
                     <div className='border-[1px] mt-3 w-full border-dashed ' ></div>
                     <span className='__className_a17902 font-[500]'>0.00</span>

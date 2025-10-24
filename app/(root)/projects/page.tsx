@@ -59,7 +59,7 @@ const ProjectHome = () => {
   const [isWalletetConnected , setIsWalletConnected] = useState<boolean>(true);
   const [activeButton, setActiveButton] = useState<searchQueryValue>("All")
   const [activeHeader, setActiveHeader] = useState<keyof ProjectTableRow | null>(null);
-  const [tableData, setTableData] = useState<ProjectTableRow[]>(projectTableElement);
+  const [tableData, setTableData] = useState<ProjectTableRow[]>(projectTableElement.slice(0, 15));
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
   const [friendlyCountdown, setFriendlyCountdown] = useState("");
@@ -67,7 +67,7 @@ const ProjectHome = () => {
 
 useEffect(() => {
   const updateCountdowns = () => {
-    setFriendlyCountdown(getCountdownString("2025-10-29", "16:00:00")); // 4:00 PM UTC
+    setFriendlyCountdown(getCountdownString("2025-11-09", "16:00:00")); // 4:00 PM UTC
     setMemeCountdown(getCountdownString("2025-11-02", "20:45:00")); // 8:45 PM UTC
   };
 
@@ -121,6 +121,26 @@ useEffect(() => {
      if (!mounted) { 
        return null;
      }
+
+     const getDummyData = (baseData: any[], count: number) => {
+          const result: any[] = [];
+          let i = 0;
+          while (result.length < count) {
+            const nextItem = baseData[i % baseData.length];
+            const prevItem = result[result.length - 1];
+        
+            // ✅ Compare using nested title
+            if (!prevItem || prevItem["Project name"].title !== nextItem["Project name"].title) {
+              result.push(nextItem);
+            } else {
+              const nextIndex = (i + 1) % baseData.length;
+              result.push(baseData[nextIndex]);
+              i++;
+            }
+            i++;
+          }
+          return result.slice(0, count);
+        };
   
      return (
           <div className='pt-8'>
@@ -502,8 +522,15 @@ useEffect(() => {
                                         key={item}
                                         onSelect={() => {
                                              setRowsToShow(item);
-                                             reshuffleTableData();
-                                        }}
+                                             const count = parseInt(item.replace("Show ", "").replace(" results", ""));
+                                             
+                                             if (count <= projectTableElement.length) {
+                                               setTableData(projectTableElement.slice(0, count));
+                                             } else {
+                                               const dummyData = getDummyData(projectTableElement, count);
+                                               setTableData(dummyData);
+                                             }
+                                           }}
                                         className={`
                                         cursor-pointer border-none w-full font-semibold rounded-none h-12 flex items-center gap-2
                                         px-[10px] pt-0

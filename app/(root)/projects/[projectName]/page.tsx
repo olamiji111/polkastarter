@@ -19,6 +19,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import 'swiper/css/pagination';
 import { usePathname } from 'next/navigation';
+import { UpcomingProjects } from '@/constants';
 
 const SaleConfig: Record<string, boolean> = {
      "Zesh AI Layer": false,
@@ -48,6 +49,7 @@ type SingleProject = {
      SwiperImagesFiles?: string[];
      Description?: Record<string, any>;
      TokenSale?: Record<string, any>;
+     saleSummary?:Record<string, any>
 };
 
 type Product = {
@@ -95,7 +97,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
      const [activeIndex, setActiveIndex] = useState(0);
      const swiperRef = useRef<any>(null);
      const [saleActive , setSaleActive] = useState<boolean>(false);
-     const [connectedAddress, setConnectedAddress] = useState<string | null>("0x789");
+     const [connectedAddress, setConnectedAddress] = useState<string | null>("0xFEDCBA6543210987");
      const [ActiveInfoTab, setActiveInfoTab] = useState<InfoTabValue>("Description");
      const [timeCountdown, setTimeCountdown] = useState<CountdownUnit[]>([
           { title: "days", number: 0 },
@@ -107,7 +109,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
      const projectCountdownDate = () => {
           switch (decodeName) {
             case "Friendly Giant AI":
-              return { date: "2025-10-29", time: "16:00:00" };
+              return { date: "2025-11-9", time: "16:00:00" };
             case "MemeMarket":
               return { date: "2025-11-02", time: "20:45:00" }; // <-- MemeMarket's date/time
             default:
@@ -119,7 +121,20 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
           return SaleConfig[projectName] ?? false; 
      };
 
-     
+     useEffect(() => {
+          const decodedName = decodeURIComponent(projectName);
+        
+   
+          const found = UpcomingProjects.find(
+            (proj) => proj.name.toLowerCase() === decodedName.toLowerCase()
+          );
+        
+          
+          if (found && (!selectedProject || selectedProject.name !== found.name)) {
+            useProjectStore.setState({ selectedProject: found });
+          }
+        }, [projectName]);
+
 
      useEffect(() => {
           setSaleActive(isSaleActiveForProject(decodeName));
@@ -166,8 +181,22 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
           RaiseToken,
           participants,
           salePercentage,
-     } = selectedProject;
+     } = selectedProject || null;
 
+     const allowedWallets = [
+          "0x1234567890abcdef",
+          "0xABCDEF9876543210",
+          "0xFEDCBA6543210987",
+          "0xa1b2c3d4e5f678901234567890abcdef12345678", // you can add more
+        ];
+
+
+     const isAllowedtoJoin =
+               isWalletetConnected &&
+               allowedWallets.some(
+               (addr) => addr.toLowerCase() === connectedAddress?.toLowerCase()
+     );
+     const salesbuttonText = isWalletetConnected ? "Join Sale" : "Connect wallet to Join"
      const CoinIcon = getIcon(cointypeIcon as CoinType);
 
      const projectData = getProjectData(decodeName);
@@ -489,8 +518,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
           ""
      ;
 
-     const isAllowedtoJoin = isWalletetConnected && connectedAddress === "0x789";
-     const salesbuttonText = isWalletetConnected ? "Join Sale" : "Connect wallet to Join"
+     
 
      const DispalyProjectInfo = () => {
           switch (ActiveInfoTab) {
@@ -571,13 +599,14 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                                   <p className='text-[var(--type-3)]'>No highlights available.</p>
                                              )}
                                              {decodeName === "MemeMarket" && SwiperImages.length > 1 && (
-                                                  <div onClick={() => window.open(SwiperImages[1], "_blank", "noopener,noreferrer")} className='w-full md:w-full h-100 relative mb-4 cursor-zoom-in group'>
+                                                  <div onClick={() => window.open(SwiperImages[1], "_blank", "noopener,noreferrer")} className='w-full  relative mb-4 cursor-zoom-in group'>
                                                        <Image
                                                             src={SwiperImages[1]}
                                                             alt={`${name} highlight after start`}
-                                                            fill
+                                                            width={1000}
+                                                            height={1000}
                                                             priority
-                                                            className='object-left transition-transform duration-300'
+                                                            className='object-cover transition-transform duration-300'
                                                        />
                                                   </div>
                                              )}
@@ -594,13 +623,14 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                    <hr className="flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-[center] bg-[linear-gradient(90deg,rgba(0,187,255,0.6)_30%,rgba(255,255,255,0)_0px)]" />
                               </div>
                               {decodeName === "Zesh AI Layer" && SwiperImages[1] && (
-                                   <div  onClick={()=> window.open(SwiperImages[1], "_blank", "noopener,noreferrer")} className='w-full cursor-zoom-in md:w-full h-100 relative '>
+                                   <div  onClick={()=> window.open(SwiperImages[1], "_blank", "noopener,noreferrer")} className='w-full cursor-zoom-in  relative '>
                                         <Image
                                              src={SwiperImages[1]}
                                              alt={`${name} product image`}
-                                             fill
+                                             width={1000}
+                                             height={1000}
                                              priority
-                                             className='object-left transition-transform duration-300'
+                                             className='object-cover transition-transform duration-300'
                                         />
                                    </div>
                               )}
@@ -609,13 +639,15 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                    <h3 className='text-[36px] text-primary font-bold tracking-[-0.02rem] leading-tight'> {product.title}</h3>
                               )}
                                {decodeName === "KeetaAI" && SwiperImages[2] && (
-                                   <div  onClick={()=> window.open(SwiperImages[2], "_blank", "noopener,noreferrer")} className='w-full md:w-full h-100 relative mb-4 cursor-zoom-in group'>
+                                   <div  onClick={()=> window.open(SwiperImages[2], "_blank", "noopener,noreferrer")} className='w-full  relative mb-4 cursor-zoom-in group'>
                                         <Image
                                              src={SwiperImages[2]}
                                              alt={`${name} product image`}
-                                             fill
+                                             width={1000}
+                                             height={1000}
                                              priority
-                                             className='object-left transition-transform duration-300 '
+                                             className="object-center transition-transform duration-300"
+                                          
                                         />
                                    </div>
                               )}
@@ -690,7 +722,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                    width={1000}
                                    height={1000}
                                    priority
-                                   className="object-left transition-transform duration-300"
+                                   className="object-center transition-transform duration-300"
                               />
                               </div>
                               )}
@@ -788,13 +820,14 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                     <hr className="flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-[center] bg-[linear-gradient(90deg,rgba(0,187,255,0.6)_30%,rgba(255,255,255,0)_0px)]" />
                               </div>
                               {decodeName === "MemeMarket" && SwiperImages[4] && (
-                                   <div  onClick={()=> window.open(SwiperImages[4], "_blank", "noopener,noreferrer")} className='w-full cursor-zoom-in md:w-full h-110 relative '>
+                                   <div  onClick={()=> window.open(SwiperImages[4], "_blank", "noopener,noreferrer")} className='w-full cursor-zoom-in  relative '>
                                         <Image
                                              src={SwiperImages[4]}
                                              alt={`${name} product image`}
-                                             fill
+                                             width={1000}
+                                             height={1000}
                                              priority
-                                             className='object-left transition-transform duration-300'
+                                             className='object-cover transition-transform duration-300'
                                         />
                                    </div>
                               )}
@@ -906,24 +939,26 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                     <hr className="flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-[center] bg-[linear-gradient(90deg,rgba(0,187,255,0.6)_30%,rgba(255,255,255,0)_0px)]" />
                               </div>
                               {decodeName === "MemeMarket" && SwiperImages[6] && (
-                                   <div   onClick={()=> window.open(SwiperImages[5], "_blank", "noopener,noreferrer")} className='w-full cursor-zoom-in md:w-full h-110 relative overflow-hidden '>
+                                   <div   onClick={()=> window.open(SwiperImages[5], "_blank", "noopener,noreferrer")} className='w-full cursor-zoom-in relative overflow-hidden '>
                                         <Image
                                              src={SwiperImages[6]}
                                              alt={`${name} product image`}
-                                             fill
+                                             width={1000}
+                                             height={1000}
                                              priority
-                                             className='object-center '
+                                             className='object-center transition-transform duration-300'
                                         />
                                    </div>
                               )}
                               {decodeName === "MemeMarket" && SwiperImages[7] && (
-                                   <div  onClick={()=> window.open(SwiperImages[6], "_blank", "noopener,noreferrer")} className='w-full cursor-zoom-in md:w-full h-110 relative overflow-hidden'>
+                                   <div  onClick={()=> window.open(SwiperImages[6], "_blank", "noopener,noreferrer")} className='w-full cursor-zoom-in  relative overflow-hidden'>
                                         <Image
                                              src={SwiperImages[7]}
                                              alt={`${name} product image`}
-                                             fill
+                                             width={1000}
+                                             height={1000}
                                              priority
-                                             className='object-center'
+                                             className='object-center transition-transform duration-300'
                                         />
                                    </div>
                               )}
@@ -1380,68 +1415,118 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                          </div>
                          <div className='mt-14 flex flex-col gap-8 ' data-slot="Business Model for the upcoming Projects">
                               <div className='flex flex-row gap-2 w-full  items-center'>
-                                   <h3 className=' sm:text-[20px] text-[18px] leading-[0.4rem] text-[var(--type-6)] tracking-[0.6rem] uppercase font-[600]'>
+                                   <h3 className=' whitespace-normal break-words  sm:text-[20px] text-[18px] leading-8 text-[var(--type-6)] tracking-[0.4rem] sm:tracking-[0.7rem] uppercase font-[600]'>
                                        {` about ${decodeName}`}
                                     </h3>
                                     <hr className="flex-grow border-0 h-[1px] bg-[length:5px_1px] bg-repeat-x bg-[center] bg-[linear-gradient(90deg,rgba(0,187,255,0.6)_30%,rgba(255,255,255,0)_0px)]" />
                               </div>
-
-                              <div className="flex flex-row justify-between w-full items-start mt-1">
-                                   <div className="flex flex-col gap-2 px-2 ">
-                                        <span className='text-[var(--type-4)] text-[18px] font-[600]'> Website </span>
+                              <div className="flex flex-col gap-4">
+  {/* Small screens */}
+                                   <div className="flex flex-col  [@media(min-width:500px)]:hidden gap-4 px-2">
+                                   {/* First row: Website | Image */}
+                                   <div className="flex flex-row justify-between items-center">
+                                        {/* Website */}
+                                        <div className="flex flex-col">
+                                        <span className="text-[var(--type-4)] text-[18px] font-[600]">Website</span>
                                         {link && (
+                                             <a
+                                             href={`https://${link}`}
+                                             target="_blank"
+                                             rel="noopener noreferrer"
+                                             className="text-[var(--type-6)] cursor-pointer font-[600] text-[16px] hover:opacity-70"
+                                             >
+                                             {link.link}
+                                             </a>
+                                        )}
+                                        </div>
+
+                                        {/* Image */}
+                                        <div className="flex justify-end">
+                                        <Image
+                                             width={100}
+                                             height={80}
+                                             alt={name}
+                                             src={icon}
+                                             className="w-24 h-24 object-cover rounded-full"
+                                        />
+                                        </div>
+                                   </div>
+
+                                        {/* Second row: Documents */}
+                                        <div className="flex flex-col">
+                                             <span className="text-[var(--type-4)] text-[18px] font-[600]">Documents</span>
+                                             <a
+                                             href="/projects/"
+                                             target="_blank"
+                                             rel="noopener noreferrer"
+                                             className="capitalize text-[var(--type-6)] cursor-pointer font-[600] text-[17px] hover:opacity-70"
+                                             >
+                                             Whitepaper
+                                             </a>
+                                        </div>
+                                        </div>
+
+                                        {/* Medium+ screens */}
+                                        <div className="hidden   [@media(min-width:500px)]:flex [@media(min-width:500px)]:flex-row  [@media(min-width:500px)]:justify-between [@media(min-width:500px)]:gap-6 px-2">
+                                        {/* Website */}
+                                        <div className="flex flex-col md:flex-1">
+                                             <span className="text-[var(--type-4)] text-[18px] font-[600]">Website</span>
+                                             {link && (
                                              <a
                                                   href={`https://${link}`}
                                                   target="_blank"
                                                   rel="noopener noreferrer"
                                                   className="text-[var(--type-6)] cursor-pointer font-[600] text-[16px] hover:opacity-70"
-                                                  >
+                                             >
                                                   {link.link}
                                              </a>
                                              )}
-                                   </div>
-                                   <div className="flex flex-col gap-2 px-2 ">
-                                        <span className='text-[var(--type-4)] text-[18px] font-[600]'> Documents </span>
-                                        
+                                        </div>
+
+                                        {/* Documents */}
+                                        <div className="flex flex-col md:flex-1">
+                                             <span className="text-[var(--type-4)] text-[18px] font-[600]">Documents</span>
                                              <a
-                                                  href="/projects/"
-                                                  target="_blank"
-                                                  key={name}
-                                                  rel="noopener noreferrer"
-                                                  className=" capitalize text-[var(--type-6)] cursor-pointer font-[600] text-[17px] hover:opacity-70"
+                                             href="/projects/"
+                                             target="_blank"
+                                             rel="noopener noreferrer"
+                                             className="capitalize text-[var(--type-6)] cursor-pointer font-[600] text-[17px] hover:opacity-70"
                                              >
-                                                  Whitepaper 
+                                             Whitepaper
                                              </a>
-                                             
+                                        </div>
+
+                                        {/* Image */}
+                                        <div className="flex justify-center md:justify-end md:flex-1">
+                                             <Image
+                                             width={100}
+                                             height={80}
+                                             alt={name}
+                                             src={icon}
+                                             className="w-24 h-24 object-cover rounded-full"
+                                             />
+                                        </div>
+                                        </div>
+
+                                        {/* Social Media always last */}
+                                        <div className="flex flex-col gap-2 px-2 mt-4">
+                                        <span className="text-[var(--type-4)] text-[18px] font-[600]">Social Media</span>
+                                        <div className="flex flex-row gap-2 items-center">
+                                             {socials.map(({ label, icon: Icon, href }) => (
+                                             <a
+                                                  key={label}
+                                                  href={href}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  className="px-1 text-[var(--text-muted)] hover:text-[color:var(--link-hover)]"
+                                             >
+                                                  <Icon className="size-5" />
+                                             </a>
+                                             ))}
+                                        </div>
+                                        </div>
+                                        </div>
                                    </div>
-                                   <Image 
-                                        width={100}
-                                        height={80}
-                                        alt={name}
-                                        src={icon}
-                                        objectFit='center'
-                                        className=' w-28 h-28 object-cover rounded-full '
-                                   />
-                                   
-                              </div>
-                         </div>
-                         <div className="-mt-8 flex flex-col gap-4">
-                              <span className='text-[var(--type-4)] text-[18px] font-[600]'> Social Media </span>
-                              <div className="flex flex-row gap-2 items-center">
-                              {socials.map(({label, icon:Icon, href}) => (
-                                   <a
-                                        key={label}
-                                        href={href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className='px-1 text-[var(--text-muted)]
-                                        hover:text-[color:var(--link-hover)] '
-                                   >
-                                        <Icon className='size-6' />
-                                   </a>
-                              ))}
-                              </div>
-                         </div>
 
                     </div>
                    
@@ -1484,8 +1569,8 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                     className="absolute -top-8 inset-0 h-[450px] bg-cover bg-no-repeat bg-center z-0"
                     style={{
                       backgroundImage: `linear-gradient(0deg, rgb(9,9,11), rgba(9,9,11,0.6)), url(${backgroundImage})`,
-                      backgroundAttachment: "scroll, fixed",
-                      filter: "blur(12px) brightness(1.2) saturate(2)",
+                     
+                      filter: "blur(10px) brightness(1.2) saturate(2)",
                       display: "initial",
                       left: 0,
                       right: 0,
@@ -1651,8 +1736,8 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                    }}
                               >
                               {SwiperImages.map((src, index) => (
-                                   <SwiperSlide key={index} className='cursor-pointer'>
-                                        <div className={` relative w-full aspect-[16/9] border-none  rounded-xl overflow-hidden`}>
+                                   <SwiperSlide key={index} className='cursor-pointer  '>
+                                        <div className={`  w-full aspect-[16/9] border-none  rounded-xl `}>
                                              <Image 
                                              src={src}
                                              alt={`Thumbnail ${index +1}`}
@@ -1786,7 +1871,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                     </div>
                    </div>
                    
-               <div className={` mt-8 order-2 border-b ${resolvedTheme === 'dark' ? 'bg-zinc-800' : 'bg-zinc-50'} h-14 flex w-full items-center px-4 `}>
+               <div className={` mt-8 order-2 border-b ${resolvedTheme === 'dark' ? 'bg-transparent' : 'bg-zinc-50'} h-14 flex w-full items-center px-4 `}>
                     <div className='flex flex-row items-center justify-center'>
                          {InfoTab.map((item, idx) => (
                               <div className='relative group' key={idx}>

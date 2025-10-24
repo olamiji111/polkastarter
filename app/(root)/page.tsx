@@ -144,9 +144,9 @@ const Home = () =>  {
                   <Image
                     alt={coin.title}
                     width={coin.title === "HTX" ? 50 : 80}
-                    height={100}
+                    height={coin.title === "HTX" ? 100 : 100}
                     src={resolvedTheme === "dark" ? coin.dark : coin.light}
-                    className={`  self-center  ${coin.title === "HTX" ? " h-10 " : ""} ${coin.title == "Mexc Global" && theme !=="dark" ? "w-22 h-5" : ""}`} 
+                    className={`  self-center   ${coin.title == "Mexc Global" && theme !=="dark" ? "w-22 h-5" : ""}`} 
                   />
                     {coin.title === "kraken" && (
                         <Bitavo 
@@ -158,7 +158,7 @@ const Home = () =>  {
           </div>
         </div>
        </div>
-       <div className="flex flex-col bg-[#00BBFF] py-8 mt-6 px-10 lg:px-24 lg:flex-row gap-4 lg:gap-20 justify-center">
+       <div className="flex flex-col bg-[#00BBFF] py-8 mt-16 px-10 lg:px-24 lg:flex-row gap-4 lg:gap-20 justify-center">
           <div>
             <h1 className="text-white text-[22px] font-bold text-center lg:text-left"> Polkastarter Council </h1>
             <p className="text-white text-base font-semibold mt-1 text-center lg:text-left"> Our council includes individuals from </p>
@@ -199,25 +199,25 @@ const Home = () =>  {
                   className="rounded-xl object-cover"
                 />
             </div>
-            <div className="w-11/12 lg:w-1/2 lg:pr-20">
+            <div className="w-11/12 lg:w-1/2 lg:pr-20 mt-1">
               <h3 className="text-[32px] font-normal text-[#00BBFF] -mt-4 sm:text-[62px] sm:leading-[65px]"> Join Your First Sale in Minutes </h3>
                   <div className="flex flex-col mt-6 gap-4">
                     {steps.map((step, index) => (
                       <div key={index} className="flex-row flex items-center ">
                         <span className="mr-4 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-[#00BBFF] text-[26px] font-semibold text-[#00BBFF] sm:h-[52px] sm:w-[52px]"> {index +1} </span>
-                        <span className="text-sm sm:text-[20px] text-[(--type-1)] font-normal sm:leading-[24px]"> {step} </span>
+                        <span className="text-sm sm:text-[20px] text-[(--type-1)] font-[600] sm:leading-[24px]"> {step} </span>
                       </div>
                     ))}
                   </div>
                   <div className="mt-6 flex-col flex gap-4 sm:flex-row">
-                      <Button className="text-md cursor-pointer hover:bg-contrast rounded-3xl bg-[#00BBFF] px-8 py-3 text-[#18181b] h-12 w-34"> Buy POLS</Button>
+                      <Link href="https://www.revolut.com/crypto/price/pols/" target="_blank" rel="noopener noreferer" className="text-md cursor-pointer hover:bg-contrast rounded-3xl bg-[#00BBFF] px-8 py-3 text-[#18181b] h-12 w-34"> Buy POLS</Link>
                       <Button className="text-md cursor-pointer hover:bg-contrast rounded-3xl bg-[#00BBFF29] px-8 py-3 h-12 text-[#0095CC] w-50">Create An Account </Button>
                   </div>
             </div>
           </div>
        </div>
        <div className="pt-16 px-6">
-          <h2 className="text-[24px] sm:text-[40px] text-center font-bold">Why POLS?  </h2>
+          <h2 className="text-[24px] sm:text-[40px] text-center font-bold">Why POLS?</h2>
           <div className="mx-auto mt-20 grid grid-cols-1 lg:grid-cols-3 gap-10">
               {polsStatement.map((pols, index) => (
                 <div key={index} className={` ${resolvedTheme === "dark" ? "bg-[#18181b]" : "bg-[#fafafa]"} rounded-lg shadow-lg overflow-hidden`}>
@@ -256,7 +256,7 @@ const Home = () =>  {
             <div className="flex flex-wrap justify-center gap-8">
               {polsEvent.map((polsEvent, index) => (
                 <div key={index} className=" relative border-[#00BBFF]  rounded-xl text-[#18181b] font-bold flex items-center justify-center min-h-[100px] w-[80%] lg:w-[40%] xl:w-[30%] border "   >
-                  <div className={`absolute inset-0  bg-[length:3px_3px]  bg-blend-lighten bg-center rounded-xl  bg-[url('/assets/images/events-due-in-2025-bg.png')]  ${resolvedTheme === "dark" ? "bg-black opacity-10" : "bg-[#D2F0FB] opacity-50"} `} />  
+                  <div className={`absolute inset-0  bg-[length:6px_6px]  bg-center rounded-xl  bg-[url('/assets/images/events-due-in-2025-bg.png')]  ${resolvedTheme === "dark" ? "bg-black opacity-10 bg-blend-lighten" : "bg-[#D2F0FB] opacity-60  bg-blend-lighten"} `} />  
                     
                     <div className="relative z-10 flex items-center justify-center  px-6">
                       <span className={` font-bold text-center text-[17px]  ${ resolvedTheme ==="dark" ? "text-[#00BBFF]" : "text-black"}`}> {polsEvent}</span>
@@ -311,7 +311,7 @@ const Home = () =>  {
           {/*  new section*/}
           <div className={`flex  flex-col items-center   py-10 lg:py-0 px-6 ${resolvedTheme === "dark" ? "bg-[#09090b]" : "bg-[#fff]"}`}>
             <h1 className="mb-8 text-[24px] font-bold sm:text-[40px] lg:mt-10">POLS Token  Available On</h1>
-            <div className="mb-12 grid   grid-cols-2 gap-4 sm:gap-6 flex-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  xl:grid-cols-6">
+            <div className="mb-12 grid   grid-cols-2 gap-2 sm:gap-4 flex-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5  xl:grid-cols-6">
               {fullCoinicon.map((coin, index) =>
                 coin.link ? ( // only render if link exists
                   <Link
@@ -347,18 +347,18 @@ const Home = () =>  {
           </div>
           {/* new section  */}
           <div className="max-w-[1280px] mx-auto px-6 lg:mt-12">
-            <div className="flex flex-row  w-full items-center-safe justify-between sm:justify-start gap-x-4 sapce-x-2 ">
+            <div className="flex flex-row  w-full items-center justify-between gap-x-4 space-x-2 ">
                <h2 className="font-bold text-[20px]"> Learn about Polkastarter</h2> 
               <Link
                 href="/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-start justify-center w-full"
+                className="group flex "
               >
                
-                  <p className="font-[600]  text-[#00BBFF] whitespace-normal break-words "> Explore our Blog</p>
-                  <ChevronRight className=' w-5 h-6 text-[#00BBFF] group-hover:hidden' color='#00BBFF' strokeWidth={2.5}/>
-                  <ArrowRight className="w-6 h-4 text-[#00BBFF]  hidden group-hover:inline group-hover:translate-x-1 transform  transition-all duration-300 animate" strokeWidth={2.5}/>
+                  <p className="font-[600]  text-[#00BBFF] text-[14px] shrink-0 "> Explore our Blog</p>
+                  <ChevronRight className=' w-5 h-6 text-[#00BBFF] group-hover:hidden shrink-0' color='#00BBFF' strokeWidth={2.5}/>
+                  <ArrowRight className="w-6 h-4 text-[#00BBFF]  hidden group-hover:inline group-hover:translate-x-1 translate-y-1 transform  transition-all duration-300 animate" strokeWidth={2.5}/>
              
               </Link>
             </div>
@@ -444,7 +444,7 @@ const Home = () =>  {
                   
                   return (
                   <div className="w-full" key={idx}>
-                  <div key={idx}  onClick={() => handleQuestionSelect(idx)}  className={`  flex items-center w-full cursor-pointer justify-between ${resolvedTheme === "dark" ? "bg-[#18181b]" : "bg-[#fafafa]" } text-center border  py-5 ${idx === 3 ? "px-6" : "px-4"} rounded-xl  transition-all duration-300 ${isActive ? "border-[#00BBFF] text-[#00BBFF]" : "border-[var(--border)]"}`}>
+                  <div key={idx}  onClick={() => handleQuestionSelect(idx)}  className={`  flex items-center w-full cursor-pointer  justify-center ${resolvedTheme === "dark" ? "bg-[#18181b]" : "bg-[#fafafa]" } text-center border  py-5 ${idx === 3 ? "px-6" : "px-4"} rounded-xl  transition-all duration-300 ${isActive ? "border-[#00BBFF] text-[#00BBFF]" : "border-[var(--border)]"}`}>
                     <p className="text-[22px] font-[600] __className_a17902 text-center">
                         {question.question} 
                     </p>
