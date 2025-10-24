@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client'
 
 import Image from "next/image";
@@ -91,9 +93,30 @@ useEffect(() => {
      };
 
 
+   // eslint-disable-next-line react/no-unescaped-entities
      const handleHeaderClick = (header: keyof ProjectTableRow) => {
           setActiveHeader(header === activeHeader ? null : header); // toggle active
           reshuffleTableData();
+     };
+
+     // eslint-disable-next-line react/no-unescaped-entities
+     const getDummyData = (baseData: any[], count: number) => {
+          const result: any[] = [];
+          let i = 0;
+          while (result.length < count) {
+          const nextItem = baseData[i % baseData.length];
+          const prevItem = result[result.length - 1];
+
+          if (!prevItem || prevItem["Project name"].title !== nextItem["Project name"].title) {
+          result.push(nextItem);
+          } else {
+          const nextIndex = (i + 1) % baseData.length;
+          result.push(baseData[nextIndex]);
+          i++;
+          }
+          i++;
+          }
+          return result.slice(0, count);
      };
 
 
@@ -122,31 +145,12 @@ useEffect(() => {
        return null;
      }
 
-     const getDummyData = (baseData: any[], count: number) => {
-          const result: any[] = [];
-          let i = 0;
-          while (result.length < count) {
-            const nextItem = baseData[i % baseData.length];
-            const prevItem = result[result.length - 1];
-        
-            // ✅ Compare using nested title
-            if (!prevItem || prevItem["Project name"].title !== nextItem["Project name"].title) {
-              result.push(nextItem);
-            } else {
-              const nextIndex = (i + 1) % baseData.length;
-              result.push(baseData[nextIndex]);
-              i++;
-            }
-            i++;
-          }
-          return result.slice(0, count);
-        };
-  
+    
      return (
           <div className='pt-8'>
                <div className={` pt-20 ${isSmall ? 'px-4' : 'px-8'} `}>
                     <h2 className='text-2xl font-extrabold sans text-[var(--type-1)]'> Upcoming Projects </h2>
-                    <div className="grid gap-6 w-full  grid-cols-1 md:grid-cols-2 [@media(min-width:1150px)]:grid-cols-3 xl:grid-cols-3 h-full cursor-pointer ">
+                    <div className="grid gap-6 w-full  grid-cols-1 md:grid-cols-2 [@media(min-width:1150px)]:grid-cols-3 xl:grid-cols-3 h-full cursor-pointer">
                          {UpcomingProjects.map(({ 
                          name, 
                          backgroundImage, 
@@ -370,7 +374,9 @@ useEffect(() => {
                     <div className='flex flex-col lg:flex-row  w-full gap-4   items-start'>
                          <div className='flex flex-col gap-2 items-start min-w-[300px] lg:min-w-[400px]'>
                               <h2 className='text-[22px] sm:text-[23px] font-extrabold sans text-[var(--type-1)]'> Funded Projects</h2>
-                              <p className='text-zinc-400 text-[19px] md:text-[19px] font-[600] tracking-[-0.02em] '> We bring new technologies to our community </p>
+                              <p className='text-zinc-400 text-[19px] md:text-[19px] font-[600] tracking-[-0.02em]'> 
+                                   We bring new technologies to our community 
+                              </p>
                          </div>
                          <div className='grid grid-cols-1 md:grid-cols-3 w-full items-center gap-3 '>
                               {FundedProjects.map(({title, value, icon:Icon}, idx) => {
@@ -425,7 +431,7 @@ useEffect(() => {
                          <div className=' mt-10 flex flex-row items-center w-full mb-10 border-b '>
                               <input
                                    type='text'
-                                   placeholder={`${isSmall ?"Search Projects" : "Search by project name,token contract address, or token symbol"}`}
+                                   placeholder={`${isSmall ? "Search Projects" : "Search by project name,token contract address, or token symbol"}`}
                                    value={searchQuery}
                                    onChange={(e) => {
                                         setSearchQuery(e.target.value);

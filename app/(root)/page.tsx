@@ -93,10 +93,9 @@ const Home = () =>  {
        <div className="px-4 pt-10 ">
         <div className="mx-auto mt-8 items-center grid  lg:grid-cols-2 lg:items-center min-h-[200px] ">
           <div className="items-center lg:mx-0 mx-auto gap-4  py-4  lg:items-start lg:px-2 ">
-            <h2  className=" __className_a17902 antialiased text-5xl  lg:text-8xl text-center  lg:text-left font-[400] mx-auto lg:mx-0 max-w-full  "> 
-               Crypto's First Launchpad 
-            </h2>
-            
+          <h2 className="__className_a17902 antialiased text-5xl lg:text-8xl text-center lg:text-left font-[400] mx-auto lg:mx-0 max-w-full">
+            Crypto&apos;s First Launchpad
+          </h2>
             <p className="mt-9 __className_a17902 text-[18px] text-[#71717A] font-[600] text-center antialiased lg:text-left"> 
               Founded in 2020
               <br />
@@ -134,7 +133,10 @@ const Home = () =>  {
           </div>
         </div>
         <div className="mx-auto mt-12  flex flex-col  items-center w-[92%]">
-          <p className="px-4 text-center text-sm font-medium uppercase tracking-widest text-[#71717A] "> Available on the World's largest exchanges </p>
+        <p className="px-4 text-center text-sm font-medium uppercase tracking-widest text-[#71717A] ">
+          Available on the World&apos;s largest exchanges
+        </p>
+         
           <div className="flex mt-6 gap-y-3 flex-wrap  items-center justify-center  gap-x-6 lg:gap-x-8 [@media(max-width:540px)]:w-[90%] lg:w-[100%]  h-full  ">
               <Revolut 
                 className=" w-18 "

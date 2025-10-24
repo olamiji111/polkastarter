@@ -1,10 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import React, {useEffect, useState, useRef} from 'react'
 import {useResolvedTheme} from "@/components/shared/theme-context"
-import { useTheme } from 'next-themes';
-import {ChevronDown, CheckCircle2, CheckCircle, Check} from "lucide-react"
-import Link from 'next/link';
 import Image from "next/image";
 import { useProjectStore } from '@/store';
 import { usePathname } from 'next/navigation';

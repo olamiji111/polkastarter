@@ -1,3 +1,6 @@
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -137,7 +140,7 @@ const CoinSelect = () => {
                     align="center"
                     className={`  w-full h-12 text-center ${selectedCoin.title === 'Binance' ? 'translate-y-1 ' : '-translate-y-8 '}relative ${
                                   resolvedTheme === "dark" ? "bg-zinc-800" : "bg-white"
-                                  } border-[var(--tooltip-border)] border shadow-md shadow-[var(--surface-1)]`
+                                  } border-[var(--tooltip-border)] border shadow-md `
                               }
                   >
                       <div

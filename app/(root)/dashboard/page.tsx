@@ -37,7 +37,7 @@ const Dashboard = () => {
   };
 
 
-   const dynamicAllowlistData = useMemo(() => {
+  const dynamicAllowlistData = useMemo(() => {
     return dashboardAllowlistTable.map((item) => {
       const projectName = item["Project name"].title;
       const isAllowlisted = walletAllowlistMap[connectedAddress]?.includes(projectName);
@@ -46,7 +46,7 @@ const Dashboard = () => {
         Status: isAllowlisted ? "Allowlisted" : item.Status,
       };
     });
-  }, [connectedAddress]);
+  }, [connectedAddress, walletAllowlistMap]);
 
   const table = useReactTable({
     data: dynamicAllowlistData as AllowlistRow[],
@@ -293,8 +293,8 @@ const Dashboard = () => {
                         {about}
                       </h2>
                       <span className="text-[var(--type-2)] sans text-[12px] font-[500]">
-                        hasn't been reached yet
-                      </span>
+                          hasn&apos;t been reached yet
+                    </span>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -344,9 +344,9 @@ const Dashboard = () => {
                       <h2 className="text-[var(--type-1)] text-[12px] sans font-semibold tracking-tightest">
                         {info}
                       </h2>
-                      <span className="text-[var(--type-2)] sans text-[12px] font-[550]">
-                        hasn't been reached yet
-                      </span>
+                      <span className="text-[var(--type-2)] sans text-[12px] font-[500]">
+                          hasn&apos;t been reached yet
+                    </span>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

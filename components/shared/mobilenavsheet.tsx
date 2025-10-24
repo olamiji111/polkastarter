@@ -126,13 +126,13 @@ const Mobilenavsheet = ({ open, setOpen }: MobilenavsheetProps) => {
                               <p className='font-[600]  mb-1 px-1 text-[15px]'> {section.title} </p>
                                    <div className="flex flex-col gap-1 w-full">
                                    {section.links.map(({label}) => (
-                                        <a 
+                                        <Link 
                                              key={label}
                                              href="/"
                                              className=' w-[150%] text-[var(--type-2)] popover-link tracking-wide '
                                         >
                                              {label}
-                                        </a> 
+                                        </Link> 
                                    ))}
                                    </div>
                          </div>
@@ -141,7 +141,7 @@ const Mobilenavsheet = ({ open, setOpen }: MobilenavsheetProps) => {
                {/*  social Links*/}
                <div className='flex flex-row items-center justify-between px-2 gap-1.5'>
                     {socialLinks.filter(({label}) => label !== "Github").map(({label, icon:Icon, href}) => (
-                      <a
+                      <Link
                         key={label}
                         href={href}
                         target="_blank"
@@ -149,7 +149,7 @@ const Mobilenavsheet = ({ open, setOpen }: MobilenavsheetProps) => {
                         className='popover-social-link'
                       >
                         <Icon className='size-4' />
-                      </a>
+                      </Link>
                     ))}
                </div>
           </div>

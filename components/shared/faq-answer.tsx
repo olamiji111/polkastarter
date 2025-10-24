@@ -43,10 +43,10 @@ const FAQAnswer = ({ idx }: FAQAnswerProps) =>  {
         <div className="space-y-1 font-[600] text-[var(--type-1)] p-4 text-[19px] ">
           
           <ol className="list-decimal list-inside space-y-2 marker:font-bold">
-            <li>
-              <strong>Apply for the Project:</strong> Go to the Polkastarter Projects page, 
-              choose an open project marked as 'Allowlist open', and submit the form.
-            </li>
+          <li>
+            <strong>Apply for the Project:</strong> Go to the Polkastarter Projects page, 
+            choose an open project marked as &apos;Allowlist open&apos;, and submit the form.
+          </li>
             <li>
               <strong>Accumulate POLS Power:</strong> Ensure you have at least 1,000 POLS Power 
               through one of these methods:
@@ -58,7 +58,7 @@ const FAQAnswer = ({ idx }: FAQAnswerProps) =>  {
             </li>
             <li>
               <strong>Check Application Status:</strong> After the lottery, check the Dashboard. 
-              If 'Preselected', proceed to KYC.
+              If &apos;Preselected&apos;, proceed to KYC.
             </li>
             <li>
               <strong>Pass KYC:</strong> Required for IDOs. Complete via email or directly from the Dashboard.

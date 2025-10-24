@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react'
@@ -45,18 +47,17 @@ type InfoTabValue = (typeof InfoTab)[number];
 
 
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SingleProject = {
      SwiperImagesFiles?: string[];
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
      Description?: Record<string, any>;
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
      TokenSale?: Record<string, any>;
-     saleSummary?:Record<string, any>
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     saleSummary?: Record<string, any>;
 };
 
-type Product = {
-     title?: string;
-     contents: string[];
-     lists: { content: string }[];
- };
 
  
    
@@ -1569,7 +1570,6 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                     className="absolute -top-8 inset-0 h-[450px] bg-cover bg-no-repeat bg-center z-0"
                     style={{
                       backgroundImage: `linear-gradient(0deg, rgb(9,9,11), rgba(9,9,11,0.6)), url(${backgroundImage})`,
-                     
                       filter: "blur(10px) brightness(1.2) saturate(2)",
                       display: "initial",
                       left: 0,
@@ -1662,11 +1662,11 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                               className='w-full max-w-2xl md:max-w-4xl lg:max-w-2xl rounded-xl  overflow-hidden relative'
                               
                               onBeforeInit={(swiper) => {
-                                   // Attach navigation elements before initialization
-                                   // @ts-ignore
-                                   swiper.params.navigation.prevEl = prevRef.current;
-                                   // @ts-ignore
-                                   swiper.params.navigation.nextEl = nextRef.current;
+                                   // @ts-expect-error Swiper types don't allow direct assignment to navigation.prevEl
+                                        swiper.params.navigation.prevEl = prevRef.current;
+
+                                        // @ts-expect-error Swiper types don't allow direct assignment to navigation.nextEl
+                                        swiper.params.navigation.nextEl = nextRef.current;
                                  }}
                                  onInit={(swiper) => {
                                    swiperRef.current = swiper;

@@ -57,7 +57,7 @@ export const dashboardAllowlistColumns : ColumnDef<AllowlistRow>[] = [
     cell: ({ getValue }) => {
       const status = getValue() as string;
   
-      let statusColor = "text-gray-500"; // fallback
+    
       let showPresale = false;
   
       if (status.toLowerCase() === "allowlisted") {

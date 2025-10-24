@@ -1,11 +1,10 @@
 'use client';
 
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useState, useRef} from 'react'
 import {useResolvedTheme} from "@/components/shared/theme-context"
-import { useTheme } from 'next-themes';
 import { useProjectStore } from '@/store';
-import {ChevronDown, CheckCircle2, CheckCircle, Check} from "lucide-react"
-import Link from 'next/link';
+import { CheckCircle2,  Check, XCircle} from "lucide-react"
+
 import Image from "next/image";
 import { usePathname } from 'next/navigation';
 import { CoinType, getIcon } from '@/utils';
@@ -13,7 +12,6 @@ import {getNames} from "country-list";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from '@/components/ui/button';
-
 import {z} from "zod";
 import {toast} from "sonner";
 

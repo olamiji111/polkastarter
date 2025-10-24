@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [{ url: "/favicon-new.ico", type: "image/x-icon" }],
   },
-  viewport: "width=device-width, initial-scale=1",
+  
   other: {
     "theme-color": "#4363ff", 
   },
