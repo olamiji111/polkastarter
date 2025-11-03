@@ -1,24 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 'use client';
 import { Button } from '@/components/ui/button';
-import { useTheme } from 'next-themes';
 import React, { useEffect, useRef, useState } from 'react';
 import CountUp from "react-countup";
 import PolkastarterIcon from "@/components/icons/polkastarter-icon"
 import {stakingSummary, polsAssets} from "@/constants/index";
 import {AlertIcon,  LotteryProbabilityInfo, PolsPower, PolsDiamonFlag} from "@/components/icons/icons"
-const tabs = ["stake", "withdraw"] as const;
-type TabValue = (typeof  tabs)[number];
 import CoinSelect from '@/components/shared/coinselectpopover';
 import {useResolvedTheme} from "@/components/shared/theme-context"
 import { AlertDialog, AlertDialogCancel, AlertDialogContent,  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import SignIn from '@/sections/sign-in';
+import { useAppKitProvider, useAppKitAccount } from "@reown/appkit/react";
+import type { Provider } from "@reown/appkit/react";
+
+const tabs = ["stake", "withdraw"] as const;
+type TabValue = (typeof  tabs)[number];
 
 
 const Staking = () => {
   const {resolvedTheme, mounted} = useResolvedTheme();
-  const {theme} = useTheme();
-  const [isLoggedIn , setIsLoggedIn] = useState<boolean>(false);
-  const [isWalletetConnected , setIsWalletConnected] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState(false);
   const [amount, setAmount] = useState("0")
   const [activeTab, setActiveTab] = useState<TabValue>("stake")
@@ -26,9 +27,43 @@ const Staking = () => {
   const indicatorRef = useRef<HTMLDivElement>(null);
   const [hasClickedContribute, setHasClickedContribute] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSigInOpen, setIsSignInOpen] = useState(false);
+  const {address, isConnected} = useAppKitAccount()
+  const [ isWalletConnected, setWalletConnected] = useState<boolean>(false);
+  const { walletProvider } = useAppKitProvider<Provider>("eip155");
+  const [polsBalance, setPolsBalance] = useState("0.00");
 
- 
+  async function fetchPolsBalance() {
+    if (!walletProvider || !address) return;
 
+    try {
+      const POLS_CONTRACT = "0x83e6f1E41cdd28eAcEB20Cb649155049Fac3D5Aa";
+      const balanceOfData =
+        "0x70a08231" + address.replace("0x", "").padStart(64, "0");
+
+      const rawBalance = await walletProvider.request({
+        method: "eth_call",
+        params: [{ to: POLS_CONTRACT, data: balanceOfData }, "latest"],
+      });
+
+      const balance = parseInt(rawBalance as any, 16) / 1e18;
+      setPolsBalance(balance.toFixed(2));
+    } catch (err) {
+      console.error("❌ Failed to fetch POLS balance:", err);
+      setPolsBalance("0.00");
+    }
+  }
+
+  useEffect(() => {
+    if (isConnected) fetchPolsBalance();
+  }, [isConnected, walletProvider, address]);
+
+
+  useEffect(() => {
+    if (isConnected && address) {
+      setWalletConnected(isConnected)
+    }
+  }, [])
   useEffect(() => {
     const index = tabs.findIndex((t) => t === activeTab);
     const target = buttonRefs.current[index];
@@ -90,8 +125,7 @@ const Staking = () => {
     return null;
   }
 
-  
-  const shouldShowNoPolsError = !isWalletetConnected &&  Number(amount.replace(/,/g, "")) > 0;
+  const shouldShowNoPolsError = Number(amount.replace(/,/g, "")) > Number(polsBalance);
   const isAmountPositive = Number(amount.replace(/,/g, "")) > 0;
   return (
     <div className='py-8'>
@@ -147,8 +181,8 @@ const Staking = () => {
               </div>
             </div>
             <div className=' relative flex flex-col items-center gap-x-6 gap-y-4 px-8 py-10'> 
-              {!isWalletetConnected ? (
-                <Button className="text-[12px]  font-[600] cursor-pointer bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] rounded-3xl py-3 text-[#18181b] h-7 "> 
+              {!isWalletConnected ? (
+                <Button  onClick={() => setIsSignInOpen(true)}  className="text-[12px]  font-[600] cursor-pointer bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] rounded-3xl py-3 text-[#18181b] h-7 "> 
                   Connect Wallet 
                </Button>
               ):(
@@ -174,10 +208,12 @@ const Staking = () => {
                   <div className='flex items-center gap-1.5'>
                     <PolkastarterIcon  className='size-5'/>
                     <div className='flex items-center -space-x-7'> 
-                      <button className='__className_a17902 font-[500] tracking-wide text-[18px]  hover:bg-contrast cursor-pointer'> 
-                          0
-                        <span className='text-[var(--text-muted)]  pr-8'>.00</span> 
-                      </button>
+                    <span className='font-[500] tracking-wide text-[18px] hover:bg-contrast cursor-pointer'>
+                          {polsBalance.split(".")[0]}
+                      <span className='text-[var(--text-muted)] pr-8'>
+                          .{polsBalance.split(".")[1] || "00"}
+                      </span>
+                      </span>
                       <span className='text-[var(--text-muted)] text-[14px] font-[600]'>POLS</span>
                     </div>
                   </div>
@@ -251,7 +287,7 @@ const Staking = () => {
                                           ${activeTab === "stake" ? "bg-[var(--color-primary)]   hover:bg-[var(--color-primary-hover)]" : "bg-[var(--color-warning)] hover:bg-[var(--color-warning)]/90" }
                                           ${resolvedTheme === 'dark' ? 'disabled:text-zinc-400/80 disabled:bg-zinc-600/30 ' : 'disabled:text-zinc-400 disabled:bg-zinc-200'}`}
                                          
-                              disabled={!isWalletetConnected || !isAmountPositive}
+                              disabled={!isConnected || !isAmountPositive}
                               onClick={
                                 activeTab === "stake"
                                   ? handleStakeClick 
@@ -259,7 +295,7 @@ const Staking = () => {
                               }  
                       >
                           {activeTab === "stake"
-                              ? isAmountPositive && isWalletetConnected
+                              ? isAmountPositive && isConnected
                               ? "Deposit & Lock"
                               : "Deposit & Lock"
                               : "Withdraw POLS"
@@ -344,7 +380,7 @@ const Staking = () => {
                     <span className='opacity-60 text-4xl'>0</span>
                   </div>
                 </div>
-                <div className='flex h-6 w-auto flex-row items-center justify-between gap-3 min-w-[350px] px-2'>
+                <div className='flex h-6 w-auto flex-row items-center justify-between gap-3 min-w-[350px]'>
                     <p className='text-sm font-[500]  text-[(var(--type-1)] text-[15px] '> POLS Staked</p>
                     <div className='border-[1px] mt-3 w-full border-dashed ' ></div>
                     <span className='__className_a17902 font-[500]'>0.00</span>
@@ -391,6 +427,7 @@ const Staking = () => {
               </div>
             </div> 
           </div>
+          <SignIn open={isSigInOpen} onOpenChange={setIsSignInOpen} />
       </div>
   )
 }

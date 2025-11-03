@@ -147,7 +147,7 @@ const CoinSelect = () => {
                         className="flex items-center justify-between w-full px-1 py-1.5 gap-1.5 rounded-md cursor-pointer"
                         onClick={handleCopyAddress}
                       >
-                        <span className=" text-[13px] font-[500] text-primary">{selectedCoin.address}</span>
+                        <span className=" text-[13px] font-[500] text-primary truncate">{selectedCoin.address}</span>
                         <Copy className="h-4 w-4 text-[var(--type-2)]" />
                       </div>
                   </TooltipContent>

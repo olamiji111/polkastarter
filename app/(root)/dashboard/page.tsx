@@ -1,9 +1,9 @@
-'use client';
-import React, { useEffect, useMemo, useState } from 'react'
-import {AlertIcon,  Info, PolsDiamonFlag, PolsPower, Gradient, QuestionPlay} from "@/components/icons/icons"
-import { useTheme } from 'next-themes';
-import { useRouter } from "next/navigation";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+'use client';
+import React, {  useEffect, useMemo, useState } from 'react'
+import {AlertIcon,  Info, PolsDiamonFlag, PolsPower, Gradient, QuestionPlay} from "@/components/icons/icons"
+import { useRouter } from "next/navigation";
 import { polsAssets, polsDashboard, dashboardArchievements, 
   dashboardUpcomingAchievements, dashboardAllowlistTable, 
 dashboardHelpQuestions} from '@/constants';
@@ -11,21 +11,32 @@ import { Button } from '@/components/ui/button';
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip"
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowBigRight, ArrowRight } from 'lucide-react';
+import {  ArrowRight } from 'lucide-react';
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import {  dashboardAllowlistColumns } from '@/components/shared/dashboardallowlistcolumn';
 import { AllowlistRow } from '@/types';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import {useResolvedTheme} from "@/components/shared/theme-context"
+import { useAppKitAccount } from '@reown/appkit/react';
+import { useWalletStore } from '@/store';
 
 const Dashboard = () => {
   const {resolvedTheme, mounted} = useResolvedTheme();
-  const {theme} = useTheme();
   const router = useRouter();
   const [isLoggedIn , setIsLoggedIn] = useState<boolean>(true);
-  const [isWalletetConnected , setIsWalletConnected] = useState<boolean>(true);
+  const [ isWalletConnected, setWalletConnected] = useState<boolean>(false);
+  const { walletAddress, setWallet} = useWalletStore();
+  const {address, isConnected} = useAppKitAccount()
 
-  const [connectedAddress, setConnectedAddress]  = useState<string>("0xABCDEF9876543210"); 
+ 
+
+
+  useEffect(() => {
+    if (isConnected && address) {
+      setWalletConnected(isConnected);
+      setWallet(address);
+    }
+  }, [])
   
   const [transform, setTransform] = useState(
     "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)"
@@ -40,13 +51,13 @@ const Dashboard = () => {
   const dynamicAllowlistData = useMemo(() => {
     return dashboardAllowlistTable.map((item) => {
       const projectName = item["Project name"].title;
-      const isAllowlisted = walletAllowlistMap[connectedAddress]?.includes(projectName);
+      const isAllowlisted = walletAllowlistMap[address as any]?.includes(projectName);
       return {
         ...item,
         Status: isAllowlisted ? "Allowlisted" : item.Status,
       };
     });
-  }, [connectedAddress, walletAllowlistMap]);
+  }, [address, walletAllowlistMap]);
 
   const table = useReactTable({
     data: dynamicAllowlistData as AllowlistRow[],
@@ -62,7 +73,7 @@ const Dashboard = () => {
     return null;
   }
  
-  const  alertText = isLoggedIn ? "Your POLS stake is insufficent for IDO and private sale participation. consider increasing your stake" : "You are not logged in. Please log in to check your eligibility.";
+  const  alertText = isLoggedIn ? "Your can add more to your stake for IDO and private sale participation. consider increasing your stake" : "You are not logged in. Please log in to check your eligibility.";
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -98,7 +109,7 @@ const Dashboard = () => {
           <div className='sticky top-0 self-start'>
             <div className='mt-8 flex flex-col gap-10'>
               <div className=' relative flex flex-col  gap-3'>
-                {!isLoggedIn && (
+                {!isWalletConnected && (
                   <div className={` flex mt-4 items-center gap-3.5 rounded-lg border py-3 pl-4 pr-4 text-[var(--type-1)] ${resolvedTheme == 'dark' ? 'text-gray-400 bg-zinc-800' : 'bg-gray-200/40'} `} role='alert'>
                     <div className='flex gap-2 items-center '>
                       <Info  className={`${resolvedTheme === 'dark' ? 'text-[color:var(--type-2)]' : 'text-[color:var(--type-1)]' } size-8 `}/>
@@ -110,7 +121,7 @@ const Dashboard = () => {
                   <div className='flex gap-2 items-center '>
                     <AlertIcon  className='shrink-0  text-[color:var(--color-warning-foreground)] size-8 '/>
                     <div className='flex flex-col gap-2 ml-2'>
-                      <h2 className='text-[color:var(--color-warning-foreground)] font-[600] tracking-[-0.05em] text-[16px]'> {!isLoggedIn ?  "Not Logged In" : "Account Ineligible"} </h2>
+                      <h2 className='text-[color:var(--color-warning-foreground)] font-[600] tracking-[-0.05em] text-[16px]'> {!isLoggedIn ?  "Not Logged In" : "Account Eligible"} </h2>
                       <p className='text-[14px] font-[600]  text-[var(--type-1)]'> {alertText}</p>
                     </div>
                   </div>
@@ -379,7 +390,7 @@ const Dashboard = () => {
                       </TableRow>
                     ))}
                   </TableHeader>
-                  {!isLoggedIn ? (
+                  {!isWalletConnected ? (
                     <TableBody >
                       <TableRow>
                         <TableCell colSpan={3} className={` ${resolvedTheme === "dark" ? "bg-[#18181b]" : "bg-[#fff]" }`} >

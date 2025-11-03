@@ -8,23 +8,41 @@ import Mobilenavsheet from '@/components/shared/mobilenavsheet';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Menu, X } from 'lucide-react';
 import Polkastarter from "@/components/icons/polkastarter"
-import { useTheme } from 'next-themes';
 import {useResolvedTheme} from "@/components/shared/theme-context"
-import { useProjectStore } from '@/store';
-import { usePathname } from 'next/navigation';
+import SignIn from './sign-in';
+import { useWalletStore } from "@/store";
+import {generateGradientFromAddress} from "@/utils";
+import Connectedpopover from "@/components/shared/connectedpopover";
+import { useAppKitAccount } from '@reown/appkit/react';
+
+
 
 const Header = () => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const pathname = usePathname();
+  const [isSigInOpen, setIsSignInOpen] = useState(false);
+  const [isPopoverOpen, setIsPopOverOpen] = useState<boolean>(false);
   const {resolvedTheme, mounted} = useResolvedTheme();
-  const selectedProject = useProjectStore((state) => state.selectedProject);
+  const {loginType, walletAddress, userName, userImage, logout, setWallet} = useWalletStore();
+  const {address, isConnected} = useAppKitAccount();
+ 
   
-  const isProjectRoute =  pathname.startsWith("/projects/");
+
+  useEffect(() => {
+    if (isConnected && address) {
+      console.log("🔄 Restoring wallet:", address);
+      setWallet(address);
+      setIsPopOverOpen(false);
+      
+    } else {
+      console.log("⚠️ No active AppKit wallet session found");
+    }
+  }, [isConnected, address, setWallet]);
+
+
   if (!mounted) {
 
     return null;
   }
-
   
   return (
     <header  className={`fixed shadow-none z-40 backdrop-blur-[8px] w-full ${resolvedTheme === "dark" ? "transparent" : "bg-gray-50/40"}  transition-colors duration-300`}>
@@ -46,14 +64,46 @@ const Header = () => {
         <div className="flex justify-end gap-4 mt-1">
           <div className="flex items-center gap-2">
             {/* Login Button */}
-            <Button className="login-button text-md hover:bg-contrast ">
-              Login
-              <ArrowRight
-                strokeWidth={1.5}
-                className="h-4 w-4 "
+            {walletAddress && !userImage ? (
+              <>
+                <div
+                  className="w-8 h-8 rounded-full cursor-pointer"
+                  style={{
+                    background: generateGradientFromAddress(walletAddress),
+                  }}
+                onClick={() => setIsPopOverOpen(true)}
+                />
+                {isPopoverOpen && (
+                  <Connectedpopover open={isPopoverOpen} setOpen={setIsPopOverOpen} />
+                )
+
+                }  
+              </>
+            ) : walletAddress && userImage ? (
+            
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+          
+              >
+                <Image
+                  src={userImage }
+                  alt={userName || "User"}
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                />
+                <ArrowRight className="h-4 w-4 " strokeWidth={1.5} />
+              </div>
+            ) : (
              
-              />
-            </Button>
+              <Button
+                className="login-button text-[14px] hover:bg-contrast font-[400] flex items-center gap-1.5"
+                onClick={() => setIsSignInOpen(true)} 
+              >
+                <span>Login</span>
+                <ArrowRight className="h-4 w-4 " strokeWidth={1.5} />
+              </Button>
+            )}
 
             {/* Mobile Menu Toggle */}
             <button
@@ -79,6 +129,7 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <SignIn open={isSigInOpen} onOpenChange={setIsSignInOpen} />
     </header>
   );
 };

@@ -13,7 +13,7 @@ export function ChevronUpDown({ className }: { className?: string }) {
 
 export function Dark({ className }: { className?: string }) {
      return (
-          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" overflow="visible" className={`w-16 h-16 ${className}`} style={{verticalAlign: "middle"}}>
+          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" overflow="visible" className={` ${className}`} style={{verticalAlign: "middle"}}>
                <g>
                     <path fill="currentColor" d="M9 0C3.8 1.4 0 6.1 0 11.9 0 18.6 5.4 24 12.1 24c5.7 0 10.4-3.8 11.9-9C14.9 17.6 6.4 9.1 9 0z">
                     </path>
@@ -24,7 +24,7 @@ export function Dark({ className }: { className?: string }) {
 
 export function Light({ className }: { className?: string }) {
      return (
-          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" overflow="visible" className={`w-16 h-16 ${className}`}>
+          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" overflow="visible" className={` ${className}`}>
                <g fill="currentColor">
                     <path d="M13.5 0h-3v3h3V0zM21.4 4.6l-2.1-2.1-2.1 2.1 2.1 2.1 2.1-2.1zM24 10.5h-3v3h3v-3zM17.3 19.5l2.1 2.1 2.1-2.1-2.1-2.1-2.1 2.1zM13.5 21h-3v3h3v-3zM2.3 19.4l2.1 2.1 2.1-2.1-2.1-2.1-2.1 2.1zM3 10.5H0v3h3v-3zM6.7 4.7L4.6 2.6 2.5 4.7l2.1 2.1 2.1-2.1zM12 6c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6z">
                     </path>
@@ -35,7 +35,7 @@ export function Light({ className }: { className?: string }) {
 
 export function System({ className }: { className?: string }) {
      return (
-          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" overflow="visible" className={`w-16 h-16 ${className}`} style={{verticalAlign: "middle"}}>
+          <svg baseProfile="tiny" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" overflow="visible" className={`${className}`} style={{verticalAlign: "middle"}}>
                <g>
                     <path fill="currentColor" d="M22.5 0h-21C.6 0 0 .6 0 1.5V18c0 .9.6 1.5 1.5 1.5h9V21h-6v3h15v-3h-6v-1.5h9c.9 0 1.5-.6 1.5-1.5V1.5c0-.9-.6-1.5-1.5-1.5zM21 16.5H3V3h18v13.5z">
                     </path>
@@ -455,6 +455,103 @@ export function Medium({ className }: { className?: string }) {
                     </path></clipPath></defs></svg>
      )
 };
+
+
+
+export function Metamask({ className }: { className?: string }) {
+     return (
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="16" className={className} fill="#FFBA79"></rect>
+          <path d="M24.128 15.988l.863-1.013-.375-.275.6-.55-.462-.35.6-.451-.388-.3.625-3.051-.95-2.827m0 0L18.54 9.435h-5.09L7.346 7.17l-.95 2.827.638 3.05-.4.3.612.451-.462.35.6.55-.375.276.863 1.013-1.313 4.051 1.213 4.14 4.264-1.176.825.675 1.688 1.15h2.89l1.687-1.15.826-.675 4.276 1.175 1.226-4.139-1.326-4.052" fill="#F5841F"></path>
+          <path d="M24.641 7.171l-7.49 5.515 1.387-3.251 6.103-2.264zM7.346 7.171l7.428 5.565-1.325-3.301L7.346 7.17zM21.953 19.964l-2.001 3.026 4.276 1.176 1.226-4.14-3.502-.062zM6.559 20.027l1.213 4.139 4.264-1.176-1.989-3.026-3.488.063z" fill="#E27625"></path>
+          <path d="M11.81 14.837l-1.187 1.788 4.227.188-.138-4.527-2.901 2.551zM20.19 14.837l-2.952-2.601-.087 4.577 4.226-.188-1.188-1.788zM12.036 22.99l2.563-1.225-2.213-1.7-.35 2.925zM17.4 21.765l2.552 1.225-.35-2.926-2.201 1.7z" fill="#E27625"></path>
+          <path d="M19.952 22.99L17.4 21.765l.212 1.65-.025.7 2.364-1.125zM12.036 22.99l2.376 1.126-.013-.7.2-1.651-2.563 1.225z" fill="#D7C1B3"></path>
+          <path d="M14.45 18.964l-2.114-.613 1.5-.688.613 1.3zM17.538 18.964l.625-1.3 1.501.687-2.126.613z" fill="#2F343B"></path>
+          <path d="M12.036 22.99l.375-3.026-2.364.063 1.989 2.963zM19.589 19.964l.363 3.026 2-2.963-2.363-.063zM21.377 16.625l-4.226.188.387 2.15.625-1.3 1.501.688 1.713-1.726zM12.336 18.351l1.5-.688.613 1.3.4-2.15-4.226-.188 1.713 1.726z" fill="#CC6228"></path>
+          <path d="M10.623 16.625l1.763 3.44-.05-1.714-1.713-1.726zM19.664 18.351l-.063 1.713 1.776-3.439-1.713 1.726zM14.85 16.813l-.4 2.15.5 2.552.112-3.352-.212-1.35zM17.15 16.813l-.212 1.338.1 3.364.5-2.551-.387-2.151z" fill="#E27625"></path>
+          <path d="M17.538 18.964l-.5 2.55.363.25 2.2-1.7.063-1.713-2.126.613zM12.336 18.351l.05 1.713 2.213 1.7.35-.25-.5-2.55-2.113-.613z" fill="#F5841F"></path>
+          <path d="M17.588 24.116l.025-.7-.2-.163h-2.839l-.175.163.013.7-2.376-1.126.825.676 1.688 1.163h2.89l1.687-1.163.826-.676-2.364 1.126z" fill="#C0AD9E"></path>
+          <path d="M17.4 21.765l-.362-.25H14.95l-.35.25-.2 1.65.174-.162h2.84l.2.163-.213-1.651z" fill="#2F343B"></path>
+          <path d="M24.966 13.049l.625-3.051-.95-2.827-7.24 5.327 2.788 2.339 3.94 1.15.862-1.012-.375-.275.6-.538-.462-.363.6-.45-.388-.3zM6.396 9.998l.638 3.05-.4.3.6.464-.463.35.6.537-.375.276.876 1.013 3.939-1.151 2.788-2.338L7.346 7.17l-.95 2.827z" fill="#763E1A"></path>
+          <path d="M24.128 15.988l-3.939-1.151 1.188 1.788-1.775 3.44 2.35-.038h3.502l-1.326-4.04zM11.81 14.837l-3.938 1.15-1.313 4.04h3.488l2.339.037-1.763-3.439 1.188-1.788zM17.15 16.813l.25-4.314 1.139-3.064h-5.09l1.15 3.063.25 4.315.1 1.35v3.352h2.089l.012-3.352.1-1.35z" fill="#F5841F"></path>
+          </svg>
+
+     )
+};
+
+export function WalletConnect({ className }: { className?: string }) {
+     return (
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} >
+               <rect width="32" height="32" rx="16" fill="#5570FF"></rect>
+               <path d="M9.209 11.746c3.75-3.638 9.832-3.638 13.582 0l.452.438a.456.456 0 010 .659l-1.544 1.497a.245.245 0 01-.34 0l-.621-.602c-2.617-2.538-6.86-2.538-9.476 0l-.665.645a.246.246 0 01-.34 0l-1.544-1.497a.456.456 0 010-.66l.496-.48zm16.776 3.098l1.374 1.333a.456.456 0 010 .658l-6.197 6.01a.49.49 0 01-.679 0l-4.398-4.265a.123.123 0 00-.17 0l-4.398 4.266a.49.49 0 01-.68 0l-6.196-6.01a.456.456 0 010-.66l1.374-1.332a.491.491 0 01.68 0l4.397 4.265a.123.123 0 00.17 0l4.398-4.266a.49.49 0 01.68 0l4.398 4.266a.123.123 0 00.17 0l4.398-4.265a.49.49 0 01.679 0z" fill="#fff"></path>
+          </svg>
+     )
+};
+
+
+export function RainbowWallet({ className }: { className?: string }) {
+     return (
+         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}><g clip-path="url(#rainbow_svg__clip0_209_935)"><mask id="rainbow_svg__a" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32" ><circle cx="16" cy="16" r="16" fill="#D9D9D9"></circle></mask><g mask="url(#rainbow_svg__a)"><path fill="url(#rainbow_svg__paint0_linear_209_935)" d="M0 0h32v32H0z"></path></g><path d="M7.111 11.111h1.333c6.873 0 12.445 5.572 12.445 12.445v1.333h2.667c.736 0 1.333-.597 1.333-1.333 0-9.083-7.363-16.445-16.445-16.445-.736 0-1.333.597-1.333 1.333v2.667z" fill="url(#rainbow_svg__paint1_radial_209_935)"></path><path d="M21.333 23.556h3.556c0 .736-.597 1.333-1.333 1.333h-2.223v-1.333z" fill="url(#rainbow_svg__paint2_linear_209_935)">
+          </path><path d="M8.444 7.111v3.556H7.111V8.444c0-.736.597-1.333 1.333-1.333z" fill="url(#rainbow_svg__paint3_linear_209_935)"></path><path d="M7.111 10.667h1.333c7.119 0 12.89 5.77 12.89 12.889v1.333h-4v-1.333c0-4.91-3.98-8.89-8.89-8.89H7.111v-4z" fill="url(#rainbow_svg__paint4_radial_209_935)"></path><path d="M17.778 23.556h3.555v1.333h-3.555v-1.333z" fill="url(#rainbow_svg__paint5_linear_209_935)"></path><path d="M7.111 14.222v-3.555h1.333v3.555H7.111z" fill="url(#rainbow_svg__paint6_linear_209_935)"></path><path d="M7.111 16.445c0 .736.597 1.333 1.333 1.333a5.778 5.778 0 015.778 5.778c0 .736.597 1.333 1.334 1.333h2.222v-1.333a9.333 9.333 0 00-9.334-9.334H7.111v2.223z" fill="url(#rainbow_svg__paint7_radial_209_935)"></path>
+          <path d="M14.222 23.556h3.556v1.333h-2.222a1.333 1.333 0 01-1.334-1.333z" fill="url(#rainbow_svg__paint8_radial_209_935)"></path>
+          <path d="M8.444 17.778a1.333 1.333 0 01-1.333-1.333v-2.223h1.333v3.556z" fill="url(#rainbow_svg__paint9_radial_209_935)"></path>
+          </g><defs>
+          <radialGradient id="rainbow_svg__paint1_radial_209_935" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(-90 16 7.556) scale(16.4444)"><stop offset="0.77" stopColor="#FF4000"></stop><stop offset="1" stopColor="#8754C9"></stop></radialGradient>
+          <radialGradient id="rainbow_svg__paint4_radial_209_935" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(-90 16 7.556) scale(12.8889)">
+          <stop offset="0.724" stopColor="#FFF700"></stop><stop offset="1" stopColor="#FF9901"></stop></radialGradient>
+          <radialGradient id="rainbow_svg__paint7_radial_209_935" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(-90 16 7.556) scale(9.33333)">
+          <stop offset="0.595" stopColor="#0AF"></stop><stop offset="1" stopColor="#01DA40"></stop></radialGradient>
+          <radialGradient id="rainbow_svg__paint8_radial_209_935" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(3.77778 0 0 10.0741 14 24.222)">
+          <stop stopColor="#0AF"></stop>
+          <stop offset="1" stopColor="#01DA40"></stop></radialGradient><radialGradient id="rainbow_svg__paint9_radial_209_935" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 -3.77778 71.6378 0 7.778 18)">
+          <stop stopColor="#0AF"></stop>
+          <stop offset="1" stopColor="#01DA40"></stop></radialGradient><linearGradient id="rainbow_svg__paint0_linear_209_935" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse"><stop stopColor="#174299"></stop><stop offset="1" stopColor="#001E59"></stop></linearGradient>
+          <linearGradient id="rainbow_svg__paint2_linear_209_935" x1="21.111" y1="24.222" x2="24.889" y2="24.222" gradientUnits="userSpaceOnUse"><stop stopColor="#FF4000"></stop><stop offset="1" stopColor="#8754C9"></stop></linearGradient>
+          <linearGradient id="rainbow_svg__paint3_linear_209_935" x1="7.778" y1="7.111" x2="7.778" y2="10.889" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#8754C9"></stop><stop offset="1" stopColor="#FF4000"></stop></linearGradient><linearGradient id="rainbow_svg__paint5_linear_209_935" x1="17.778" y1="24.222" x2="21.333" y2="24.222" gradientUnits="userSpaceOnUse">
+               <stop stopColor="#FFF700"></stop><stop offset="1" stopColor="#FF9901"></stop></linearGradient>
+               <linearGradient id="rainbow_svg__paint6_linear_209_935" x1="7.778" y1="14.222" x2="7.778" y2="10.667" gradientUnits="userSpaceOnUse"><stop stopColor="#FFF700"></stop><stop offset="1" stopColor="#FF9901"></stop></linearGradient>
+               <clipPath id="rainbow_svg__clip0_209_935"><path fill="#fff" d="M0 0h32v32H0z"></path></clipPath></defs></svg>
+     )
+};
+
+
+export function PhantomWallet({ className }: { className?: string }) {
+     return (
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+               <g clipPath="url(#phantom_svg__clip0_209_883)"><mask id="phantom_svg__a" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32" >
+                    <path d="M32 0H0v32h32V0z" fill="#fff"></path></mask>
+                    <g mask="url(#phantom_svg__a)"><path d="M25.13 0H6.87A6.87 6.87 0 000 6.87v18.26A6.87 6.87 0 006.87 32h18.26A6.87 6.87 0 0032 25.13V6.87A6.87 6.87 0 0025.13 0z" fill="#AB9FF2"></path>
+                    <path fillRule="evenodd" clipRule="evenodd" d="M13.793 20.795c-1.257 1.925-3.362 4.362-6.164 4.362-1.324 0-2.598-.546-2.598-2.914 0-6.031 8.235-15.368 15.876-15.368 4.346 0 6.078 3.016 6.078 6.44 0 4.396-2.852 9.422-5.688 9.422-.9 0-1.341-.494-1.341-1.277 0-.205.034-.426.102-.665-.968 1.653-2.836 3.186-4.585 3.186-1.273 0-1.918-.8-1.918-1.925 0-.41.085-.835.238-1.261zm10.323-7.599c0 .998-.588 1.497-1.247 1.497-.669 0-1.247-.499-1.247-1.496 0-.998.578-1.497 1.247-1.497.659 0 1.247.499 1.247 1.497zm-3.742 0c0 .998-.589 1.497-1.247 1.497-.669 0-1.248-.498-1.248-1.496s.58-1.497 1.248-1.497c.658 0 1.247.499 1.247 1.497z" fill="#FFFDF8"></path>
+                    </g></g><defs>
+                    <clipPath id="phantom_svg__clip0_209_883"><rect width="32" height="32" rx="16" fill="#fff"></rect>
+                    </clipPath></defs></svg>
+     )
+};
+
+//Google Icon
+export function Google({ className }: { className?: string }) {
+     return (
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+               <rect width="32" height="32" rx="16" fill="#fff"></rect>
+          <g clipPath="url(#google_svg__clip0_190_2339)">
+               <path d="M26.25 16.196c0-.86-.07-1.488-.221-2.139h-9.825v3.883h5.767c-.116.965-.744 2.419-2.14 3.395l-.019.13 3.107 2.407.215.021c1.976-1.825 3.116-4.51 3.116-7.697z" fill="#4285F4"></path>
+               <path d="M16.204 26.428c2.826 0 5.197-.93 6.93-2.535l-3.302-2.558c-.884.617-2.07 1.047-3.628 1.047-2.767 0-5.115-1.826-5.953-4.349l-.122.01-3.23 2.5-.042.118a10.456 10.456 0 009.347 5.767z" fill="#34A853"></path>
+               <path d="M10.252 18.034a6.442 6.442 0 01-.35-2.07c0-.721.129-1.418.338-2.07l-.006-.138-3.27-2.54-.107.05a10.474 10.474 0 00-1.117 4.698c0 1.686.407 3.279 1.117 4.697l3.395-2.628z" fill="#FBBC05"></path>
+               <path d="M16.204 9.546c1.965 0 3.29.849 4.046 1.558l2.954-2.883c-1.814-1.686-4.174-2.721-7-2.721a10.456 10.456 0 00-9.347 5.767l3.383 2.627c.849-2.523 3.197-4.348 5.964-4.348z" fill="#EB4335"></path>
+               </g>
+               <defs><clipPath id="google_svg__clip0_190_2339"><path fill="#fff" transform="translate(5 5)" d="M0 0h22v22H0z"></path></clipPath></defs></svg> 
+     )
+};
+
+
+//X Login Icon 
+export function Twitter({ className }: { className?: string }) {
+     return (
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}><rect width="32" height="32" rx="16" fill="#000"></rect><path d="M17.9 14.198L24.092 7h-1.467l-5.377 6.25L12.953 7H8l6.494 9.451L8 24h1.468l5.678-6.6L19.68 24h4.953L17.9 14.198zm-2.01 2.337l-.658-.941-5.236-7.49h2.254l4.225 6.045.658.94 5.493 7.856H20.37l-4.481-6.41z" fill="#fff"></path></svg>
+     )
+};
+
+
 
 
 

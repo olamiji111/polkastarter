@@ -98,3 +98,68 @@ export const getCountdownString = (targetDate: string, targetTime: string): stri
 
   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 };
+
+export const createSiweMessage = (address: string, domain?: string, uri?: string) => {
+  const d = domain ?? "polkastarter.com";
+  const u = uri ?? "https://polkastarter.com";
+  const nonce = Math.random().toString(36).substring(2, 10);
+  const issuedAt = new Date().toISOString();
+
+  return `${d} wants you to sign in with your Ethereum account:
+${address}
+
+Click to sign this message and sign in. This request will not trigger a blockchain transaction or cost any gas fees.
+
+URI: ${u}
+Version: 1
+Chain ID: 1
+Nonce: ${nonce}
+Issued At: ${issuedAt}`;
+};
+
+export function generateGradientFromAddress(address: string) {
+  let hash = 0;
+  for (let i = 0; i < address.length; i++) {
+    hash = address.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const hueOffset = hash % 30; 
+  const color1 = `hsl(${20 + hueOffset}, 90%, 40%)`;  
+  const color2 = `hsl(${120 + hueOffset}, 70%, 60%)`; 
+
+  return `linear-gradient(135deg, ${color1}, ${color2})`;
+}
+
+
+export async function copyToClipboardMobileSafe(text: string) {
+  // Create a hidden textarea
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.setAttribute("readonly", "");
+  textArea.style.position = "absolute";
+  textArea.style.left = "-9999px";
+  document.body.appendChild(textArea);
+
+  // Select the text
+  const selection = document.getSelection();
+  const range = document.createRange();
+  range.selectNodeContents(textArea);
+  selection?.removeAllRanges();
+  selection?.addRange(range);
+  textArea.select();
+
+  // Try copy
+  try {
+    const successful = document.execCommand("copy");
+    if (!successful) throw new Error("execCommand returned false");
+  } catch {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      console.error("Clipboard copy failed:", err);
+    }
+  }
+
+  // Clean up
+  document.body.removeChild(textArea);
+}
