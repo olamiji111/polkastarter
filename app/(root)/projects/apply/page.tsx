@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from '@/components/ui/button';
 import {z} from "zod";
 import {toast} from "sonner";
+import emailjs from "@emailjs/browser";
 
 
 const countries = getNames();
@@ -27,7 +28,7 @@ function ApplyForm() {
   const pathname = usePathname();
   const {address, isConnected} = useAppKitAccount()
   const selectedProject = useProjectStore((state) => state.selectedProject);
-  const [isSigInOpen, setIsSignInOpen] = useState(false);
+ 
   const formRef = useRef<HTMLFormElement>(null);
   const { walletAddress, setWallet} = useWalletStore();
   const [formData, setFormData] = useState({
@@ -87,71 +88,70 @@ const handleSelect =(value: string) => {
   setFormData((prev) => ({...prev, country: value}));
 }
 
+
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   const { name, email, country } = formData;
 
-  // Disable submit while processing
+  
   const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;
   if (submitBtn) submitBtn.disabled = true;
 
   try {
-    // Simulate API call with 1s delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+   
+    const serviceId = "service_3xp77ym";  
+    const templateId = "template_go6n12h";
+    const publicKey = "tN2eL1t64jsQcDBtb"; 
 
-    // Fake success/fail logic (80% chance success)
-    const success = Math.random() > 0.2;
+  
+    await emailjs.send(serviceId, templateId, {
+      name,
+      email,
+      country,
+      wallet_address: address,
+    }, publicKey);
 
-    if (success) {
-      toast.success(`Your request form has been successfully submitted`, {
-        description: "",
-        duration:5000,
-        icon: (
-          <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center border  border-[var(--border-1)]">
-            <Check className="text-primary w-3 h-3"  strokeWidth={2.5}/>
-          </div>
-        ), 
-        style:{
-          background: resolvedTheme === "dark" ? "#18181b" : "#fff",
-          color: "var(--primary)",
-          border:"var(--border-1)",
-        
-        }
+    toast.success("Your request form has been successfully submitted", {
+      description: "",
+      duration: 5000,
+      icon: (
+        <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center border border-[var(--border-1)]">
+          <Check className="text-primary w-3 h-3" strokeWidth={2.5} />
+        </div>
+      ),
+      style: {
+        background: resolvedTheme === "dark" ? "#18181b" : "#fff",
+        color: "var(--primary)",
+        border: "var(--border-1)",
+      },
+    });
 
-      });
 
-      // Reset form
-      setFormData({ name: "", email: "", country: "" });
-      setEmailValid(null);
-    } else {
-      throw new Error("Server error");
-    }
+    setFormData({ name: "", email: "", country: "" });
+    setEmailValid(null);
   } catch (err) {
+    console.error("Failed to send EmailJS message:", err);
     toast.error("Your form has not been submitted", {
-      description:"",
+      description: "",
       duration: 5000,
       icon: (
         <div className="w-5 h-5 bg-red-400 rounded-full flex items-center justify-center border border-[var(--border-1)]">
-          <XCircle className="text-primary w-4 h-4" strokeWidth={2.5}/>
+          <XCircle className="text-primary w-4 h-4" strokeWidth={2.5} />
         </div>
       ),
-  
-      style:{
+      style: {
         background: resolvedTheme === "dark" ? "#18181b" : "#fff",
         color: "var(--primary)",
-        border:"var(--border-1)"
-      }
-
-    })
-   
-
+        border: "var(--border-1)",
+      },
+    });
   } finally {
     if (submitBtn) submitBtn.disabled = false;
   }
 };
 
-const submitDisabled = (formData.name && formData.email && formData.country);
+const submitDisabled = (formData.name && formData.email && formData.country) 
 
 
   return (

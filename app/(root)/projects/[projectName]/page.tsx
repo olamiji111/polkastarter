@@ -29,6 +29,7 @@ const SaleConfig: Record<string, boolean> = {
      "Zesh AI Layer": false,
      "KeetaAI": false,
      "Friendly Giant AI": false,
+     "MemeMarket":true,
 };
 
 const FCFS = [
@@ -131,7 +132,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
             setIsWalletConnected(isConnected);
             setWallet(address);
           }
-        }, [])
+     }, [])
 
      useEffect(() => {
           const decodedName = decodeURIComponent(projectName);
@@ -208,7 +209,16 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                allowedWallets.some(
                (addr) => addr.toLowerCase() === address?.toLowerCase()
      );
-     const salesbuttonText = isWalletetConnected ? "Join Sale" : "Connect wallet to Join"
+     const salesbuttonText = isConnected ? "Join Sale" : "Connect wallet to Join"
+
+     const handleSaleButtonText = () => {
+          if (!isConnected) {
+               setIsSignInOpen(true);
+               return;
+          }
+          router.push("/projects/sale");
+
+     } 
      const CoinIcon = getIcon(cointypeIcon as CoinType);
 
      const projectData = getProjectData(decodeName);
@@ -1873,9 +1883,9 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                   
                               </div>
                                    <button
-                                        onClick={() => router.push("/projects/sale")}
-                                        disabled={!isAllowedtoJoin}
-                                        className={` ${isAllowedtoJoin ? "bg-primary cursor-pointer hover:opacity-85" : "bg-[#767676] cursor-not-allowed"} 
+                                        onClick={handleSaleButtonText}
+                                        disabled={!isConnected}
+                                        className={` ${isConnected ? "bg-primary cursor-pointer hover:opacity-85" : "bg-[#767676] cursor-not-allowed"} 
                                         focus:none outline:none mt-5 text-[14px] font-[600] border border-transparent
                                          py-3 px-8 w-full transition-all duration-300 rounded-full  
                                          focus-visible:ring-contrast focus-visible:ring-offset-[var(--background-1)]
@@ -2025,9 +2035,9 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                               </div>
                                    
                                    <button
-                                        disabled={!isAllowedtoJoin}
-                                   onClick={() => router.push("/projects/sale")}
-                                        className={` ${isAllowedtoJoin ? "bg-primary cursor-pointer hover:opacity-85" : "bg-[#767676] cursor-not-allowed"} 
+                                        disabled={!isConnected}
+                                        onClick={handleSaleButtonText}
+                                        className={` ${isWalletetConnected ? "bg-primary cursor-pointer hover:opacity-85" : "bg-[#767676] cursor-not-allowed"} 
                                         focus:none outline:none mt-5 text-[14px] font-[600] border border-transparent
                                          py-3 px-8 w-full transition-all duration-300 rounded-full  
                                          focus-visible:ring-contrast focus-visible:ring-offset-[var(--background-1)]

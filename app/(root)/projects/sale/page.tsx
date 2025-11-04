@@ -5,7 +5,7 @@
 import React, {useEffect, useState, useRef} from 'react'
 import {useResolvedTheme} from "@/components/shared/theme-context"
 import Image from "next/image";
-import { useProjectStore } from '@/store';
+import { useProjectStore, useWalletStore } from '@/store';
 import { usePathname } from 'next/navigation';
 import { CoinType, getIcon } from '@/utils';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,8 @@ import { UpcomingProjectInfo } from '@/constants/projects';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertIcon } from '@/components/icons/icons';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent,  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-
+import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
+import type { Provider } from "@reown/appkit/react";
 
 type SingleProject = {
   SwiperImagesFiles?: string[];
@@ -61,13 +62,51 @@ const Sale =() =>  {
     { name: 'Supercharger', pols: 10000 },
   ];
   const [userTier, setUserTier] = useState<{ name: string; pols: number } | null>(null);
-  const [polsBalance, setPolsBalance] = useState< number | string>(5)
   const [openDialog, setOpenDialog] = useState(false);
+  const {address, isConnected} = useAppKitAccount()
+  const { walletAddress, setWallet} = useWalletStore();
+  const [ isWalletConnected, setWalletConnected] = useState<boolean>(false);
+  const { walletProvider } = useAppKitProvider<Provider>("eip155");
+  const [polsBalance, setPolsBalance] = useState("0.00");
+
+  async function fetchPolsBalance() {
+    if (!walletProvider || !address) return;
+
+    try {
+      const POLS_CONTRACT = "0x83e6f1E41cdd28eAcEB20Cb649155049Fac3D5Aa";
+      const balanceOfData =
+        "0x70a08231" + address.replace("0x", "").padStart(64, "0");
+
+      const rawBalance = await walletProvider.request({
+        method: "eth_call",
+        params: [{ to: POLS_CONTRACT, data: balanceOfData }, "latest"],
+      });
+
+      const balance = parseInt(rawBalance as any, 16) / 1e18;
+      setPolsBalance(balance.toFixed(2));
+    } catch (err) {
+      console.error("❌ Failed to fetch POLS balance:", err);
+      setPolsBalance("0.00");
+    }
+  }
+
+  useEffect(() => {
+    if (isConnected) fetchPolsBalance();
+  }, [isConnected, walletProvider, address]);
+
 
   useEffect(() => {
     const randomTier = TIERS[Math.floor(Math.random() * TIERS.length)];
     setUserTier(randomTier);
   }, []);
+
+   
+  useEffect(() => {
+    if (isConnected && address) {
+      setIsWalletConnected(isConnected);
+      setWallet(address);
+    }
+}, [])
   
 
   if (!selectedProject) {
@@ -125,9 +164,7 @@ const handleBlur = () => {
   }
 };
 
-const handleSubmit = () => {
-  return null;
-}
+
 
 const handleContributeClick = () => {
  setOpenDialog(true);
@@ -140,7 +177,7 @@ const handleAuthorizeClick = () => {
   setOpenDialog(false);
 };
 
-const submitDisabled = (Number(amount.replace(/,/g, "")) > 0 && polsBalance !== 0 );
+const submitDisabled = Number(amount.replace(/,/g, "")) > 0;
 
 const CoinIcon = getIcon(cointypeIcon as CoinType);
 const dateState = name === "Zesh AI Layer" ? "TBA": date;
@@ -283,10 +320,12 @@ if (userTier) {
                   <div className='flex items-center gap-1.5'>
                     <PolkastarterIcon  className='size-5'/>
                     <div className='flex items-center -space-x-7'> 
-                      <button className='__className_a17902 font-[500] tracking-wide text-[18px]  hover:bg-contrast cursor-pointer'> 
-                          0
-                        <span className='text-[var(--text-muted)]  pr-8'>.00</span> 
-                      </button>
+                    <span className='font-[500] tracking-wide text-[18px] hover:bg-contrast cursor-pointer'>
+                          {polsBalance.split(".")[0]}
+                      <span className='text-[var(--text-muted)] pr-8'>
+                          .{polsBalance.split(".")[1] || "00"}
+                      </span>
+                      </span>
                       <span className='text-[var(--text-muted)] text-[14px] font-[600]'>POLS</span>
                     </div>
                   </div>
@@ -302,7 +341,7 @@ if (userTier) {
                           id="ERC 20"
                           name="wallet"
                           type="text"
-                          value="0x104FF5a76241968b576bA01Dd"
+                          value={address}
                           readOnly
                           className='relative  ease-in-out text-primary
                            p-3 border   rounded-lg bg-inherit text-[15px]  sm:text-[16px] font-bold '
