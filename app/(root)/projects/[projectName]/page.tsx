@@ -7,7 +7,7 @@ import {ChevronRight, ChevronLeft} from "lucide-react"
 import { UpcomingProjectInfo, upcomingProjectSocials } from '@/constants/projects';
 import {useResolvedTheme} from "@/components/shared/theme-context"
 import { useTheme } from 'next-themes';
-import { useProjectStore } from '@/store';
+import { useProjectStore, useWalletStore } from '@/store';
 import Link from 'next/link';
 import {useRouter} from "next/navigation";
 import Image from "next/image";
@@ -22,6 +22,8 @@ import 'swiper/css/thumbs';
 import 'swiper/css/pagination';
 import { usePathname } from 'next/navigation';
 import { UpcomingProjects } from '@/constants';
+import SignIn from '@/sections/sign-in';
+import { useAppKitProvider, useAppKitAccount } from "@reown/appkit/react";
 
 const SaleConfig: Record<string, boolean> = {
      "Zesh AI Layer": false,
@@ -98,7 +100,6 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
      const [activeIndex, setActiveIndex] = useState(0);
      const swiperRef = useRef<any>(null);
      const [saleActive , setSaleActive] = useState<boolean>(false);
-     const [connectedAddress, setConnectedAddress] = useState<string | null>("0xFEDCBA6543210987");
      const [ActiveInfoTab, setActiveInfoTab] = useState<InfoTabValue>("Description");
      const [timeCountdown, setTimeCountdown] = useState<CountdownUnit[]>([
           { title: "days", number: 0 },
@@ -106,6 +107,9 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
           { title: "minutes", number: 0 },
           { title: "seconds", number: 0 },
      ]);
+     const [isSigInOpen, setIsSignInOpen] = useState(false);
+     const {address, isConnected} = useAppKitAccount()
+     const { walletAddress, setWallet} = useWalletStore();
      
      const projectCountdownDate = () => {
           switch (decodeName) {
@@ -121,6 +125,13 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
      const isSaleActiveForProject = (projectName: string) => {
           return SaleConfig[projectName] ?? false; 
      };
+     
+     useEffect(() => {
+          if (isConnected && address) {
+            setIsWalletConnected(isConnected);
+            setWallet(address);
+          }
+        }, [])
 
      useEffect(() => {
           const decodedName = decodeURIComponent(projectName);
@@ -188,14 +199,14 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
           "0x1234567890abcdef",
           "0xABCDEF9876543210",
           "0xFEDCBA6543210987",
-          "0xa1b2c3d4e5f678901234567890abcdef12345678", // you can add more
+          "0xa1b2c3d4e5f678901234567890abcdef12345678", // you can add more depending on the address you want to allowlist 
         ];
 
 
      const isAllowedtoJoin =
                isWalletetConnected &&
                allowedWallets.some(
-               (addr) => addr.toLowerCase() === connectedAddress?.toLowerCase()
+               (addr) => addr.toLowerCase() === address?.toLowerCase()
      );
      const salesbuttonText = isWalletetConnected ? "Join Sale" : "Connect wallet to Join"
      const CoinIcon = getIcon(cointypeIcon as CoinType);
@@ -518,6 +529,15 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
           time ? time :
           ""
      ;
+
+     const handleApply = () => {
+          if (!isConnected) {
+               setIsSignInOpen(true);
+               return;
+          }
+          router.push("/projects/apply");
+          
+     }
 
      
 
@@ -1785,12 +1805,12 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                         {fulldate}
                                    </p>
                                    
-                                    <Link
-                                        href="/projects/apply"
+                                    <div
+                                       onClick={handleApply}
                                         className=" mt-2 text-[14px] border border-transparent font-[600]  bg-[#0bf] py-3 px-8 w-full transition-all duration-300 rounded-full  flex justify-center items-center text-[var(--type-5)]"
                                    >
                                         Apply Now
-                                   </Link>
+                                   </div>
                               </div>
                          </div>
                     
@@ -1936,12 +1956,12 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                         {fulldate}
                                    </p>
                                    
-                                    <Link
-                                        href="/projects/apply"
+                                    <div
+                                       onClick={handleApply}
                                         className=" mt-2 text-[14px] border border-transparent font-[600]  bg-[#0bf] py-3 px-8 w-full transition-all duration-300 rounded-full  flex justify-center items-center text-[var(--type-5)]"
                                    >
                                         Apply Now
-                                   </Link>
+                                   </div>
                               </div>
                          </div>
                     
@@ -2028,6 +2048,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
               
               
           </div> 
+          <SignIn open={isSigInOpen} onOpenChange={setIsSignInOpen} />
      </div>
   )
 }

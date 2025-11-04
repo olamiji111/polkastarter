@@ -1,10 +1,10 @@
 'use client';
 
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {useResolvedTheme} from "@/components/shared/theme-context"
-import { useProjectStore } from '@/store';
+import { useProjectStore, useWalletStore } from '@/store';
 import { CheckCircle2,  Check, XCircle} from "lucide-react"
-
+import { useAppKitProvider, useAppKitAccount } from "@reown/appkit/react";
 import Image from "next/image";
 import { usePathname } from 'next/navigation';
 import { CoinType, getIcon } from '@/utils';
@@ -25,14 +25,24 @@ function ApplyForm() {
   const [isWalletetConnected , setIsWalletConnected] = useState<boolean>(true);
   const [connectedAddress, setConnectedAddress] = useState<string | null>("0x789");
   const pathname = usePathname();
+  const {address, isConnected} = useAppKitAccount()
   const selectedProject = useProjectStore((state) => state.selectedProject);
+  const [isSigInOpen, setIsSignInOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const { walletAddress, setWallet} = useWalletStore();
   const [formData, setFormData] = useState({
     name:"",
     email:"",
     country:""
 
   })
+
+  useEffect(() => {
+    if (isConnected && address) {
+      setIsWalletConnected(isConnected);
+      setWallet(address);
+    }
+  }, [])
   const [emailValid, setEmailValid] = useState<boolean | null>(null);
   const [shake, setShake] = useState(false);
   
@@ -44,6 +54,7 @@ if (!selectedProject) {
 if (!mounted) { 
   return null;
 }
+
 
 
 const {
@@ -329,7 +340,7 @@ const submitDisabled = (formData.name && formData.email && formData.country);
                     id="ERC 20"
                     name="wallet"
                     type="text"
-                    value="0x104FF5a76241968b576bA01Dd"
+                    value={address}
                     readOnly
                     className='ease-in-out text-[var(--type-3)]
                     border p-3 rounded-lg bg-inherit text-[15px] sm:text-[16px]'
@@ -354,6 +365,7 @@ const submitDisabled = (formData.name && formData.email && formData.country);
                   </Button>
             </div>
            </div>
+         
     </div>
   )
 }
