@@ -696,6 +696,21 @@ export const dashboardUpcomingAchievements = [
 export const  dashboardAllowlistTable = [
      {
           "Project name": {
+               title:"Friendly Giant AI",
+               imgPath:"/assets/images/projects/friendly-giant-icon.webp"
+          },
+          "Sale Date":{
+               date:"October 29th 2025",
+               time:"4:00 PM UTC",
+          },
+
+          Status:"--",
+     
+         
+     },
+
+     {
+          "Project name": {
                title:"MemeMarket",
                imgPath:"/assets/images/projects/meme-projvect-icon.webp"
           },
@@ -709,21 +724,23 @@ export const  dashboardAllowlistTable = [
 
          
      },
-    
      {
           "Project name": {
-               title:"Friendly Giant AI",
-               imgPath:"/assets/images/projects/friendly-giant-icon.webp"
+               title:"Zcash Stablecoin Protocol",
+               imgPath:"/assets/images/projects/zesh-stable-coin-icon.png"
           },
-          "Sale Date":{
-               date:"October 29th 2025",
-               time:"4:00 PM UTC",
+          "Sale Date": {
+               date:"November 7th 2025",
+               time:"8:45 PM UTC"
           },
+               
 
           Status:"--",
-     
+
          
      },
+    
+    
      {
           "Project name": {
                title:"KeetaAI",
@@ -811,7 +828,7 @@ export const UpcomingProjects = [
           about: "The First AI-Powered Prediction Market for Meme Coins on Solana",
           FundRaiseValue: "$250,000",
           maxAllocation: "TBA",
-          status: "ALLOWLIST OPEN",
+          status: "ALLOWLIST CLOSED",
           date: "November 2nd 2025",
           time:"8:45 PM UTC",
           dateStatement: "Allowlist closes in",
@@ -819,6 +836,26 @@ export const UpcomingProjects = [
           RaiseToken:"USDC on BNB",
           participants:12,
           salePercentage: "18%"
+   
+        },
+
+        {
+          name: "Zcash Stablecoin Protocol",
+          backgroundImage: "/assets/images/projects/zesh-stablecoin-background.png",
+          icon: "/assets/images/projects/zesh-stable-coin-icon.png",
+          cointypeIcon: "ethereum", 
+          about: "The first ZK privacy stablecoin protocol collateralized 1:1 by $ZEC.",
+          FundRaiseValue: "$200,000",
+          maxAllocation: "TBA",
+          status: "ALLOWLIST OPEN",
+          date: "November 7th 2025",
+          time:"8:45 PM UTC",
+          dateStatement: "Allowlist OPEN",
+          tokenPrice:"$0.00175",
+          RaiseToken:"USDC on Ethereum",
+          participants:21,
+          salePercentage: "28%"
+
    
         },
     
@@ -841,6 +878,7 @@ export const UpcomingProjects = [
 
    
         },
+
      {
        name: "Zesh AI Layer",
        backgroundImage: "/assets/images/projects/zeshlayerbg.webp",

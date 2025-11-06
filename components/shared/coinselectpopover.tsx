@@ -3,81 +3,35 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip"
-import { Ethereum, BNB, AlertIcon } from "@/components/icons/icons";
-import { Check, ChevronDown, ChevronUp, Copy } from "lucide-react";
+import { Ethereum, BNB} from "@/components/icons/icons";
+import {  ChevronDown, ChevronUp, Copy } from "lucide-react";
 import { useTheme } from "next-themes";
 import {useResolvedTheme} from "@/components/shared/theme-context"
-import { toast } from "sonner";
+import {useChainStore} from "@/store";
 
 const coinSelect = [
-  { title: "Binance", icon: BNB, address: "0x680ba3Dc38F76ba786BCF0947f993A517b4a3301" },
-  { title: "Ethereum", icon: Ethereum, address: "0xC33d49A65B3279774EB5156Af9916271d3777506" },
+  { title: "Binance", icon: BNB },
+  { title: "Ethereum", icon: Ethereum },
 ];
 const CoinSelect = () => {
   const [open, setOpen] = useState(false);
   const {resolvedTheme, mounted} = useResolvedTheme();
   const {theme} = useTheme();
-  const [selectedCoin, setSelectedCoin] = useState(coinSelect[1]); // default Ethereum
+  const [selectedCoin, setSelectedCoin] = useState(coinSelect[1]); 
+  const {setChain} = useChainStore();
 
   
-  const handleSelect = (coin: { title: string; icon: any ; address:string}) => {
+  const handleSelect = (coin: { title: string; icon: any }) => {
     setSelectedCoin(coin);  
+    setChain(coin.title as "Binance" | "Ethereum");
   };
- 
-  const handleCopyAddress = async (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    try {
-      // ✅ Try the standard Clipboard API first
-      await navigator.clipboard.writeText(selectedCoin.address);
-    } catch (err) {
-      // 🧩 Fallback for iOS/Safari/Android WebViews
-      const textArea = document.createElement("textarea");
-      textArea.value = selectedCoin.address;
-      textArea.style.position = "fixed";
-      textArea.style.opacity = "0";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand("copy");
-      } catch (err2) {
-        console.error("Fallback copy failed:", err2);
-      }
-      document.body.removeChild(textArea);
-    }
-  
-    // ✅ Show toast feedback
-    toast.custom(
-      (t) => (
-        <div
-          className={`flex items-center gap-2 p-2 rounded-md shadow-lg border border-[var(--tooltip-border)]
-            ${resolvedTheme === "dark" ? "bg-zinc-800 text-white" : "bg-white text-black"}`}
-        >
-          <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center">
-            <Check className="text-primary w-3 h-3" strokeWidth={2} />
-          </div>
-          <span className="text-xs font-[600] whitespace-normal">
-            {selectedCoin.title} address copied!
-          </span>
-        </div>
-      ),
-      {
-        duration: 2000,
-        position: "top-center",
-      }
-    );
-  };
- 
-  
 
   return (
     <div className="relative">
@@ -104,14 +58,12 @@ const CoinSelect = () => {
           className="min-w-[110px] min-h[10px] p-0 m-0"
           align="start"
         >
-        {coinSelect.map(({ title, icon: Icon, address }) => {
+        {coinSelect.map(({ title, icon: Icon }, idx) => {
           const isSelected = selectedCoin.title === title
           return (
-            <TooltipProvider key={title} delayDuration={0}>
-              <Tooltip open={open && isSelected}> 
-                <TooltipTrigger asChild>
                   <DropdownMenuItem
-                    onSelect={() => handleSelect({ title, icon: Icon, address })}
+                    key={idx}
+                    onSelect={() => handleSelect({ title, icon: Icon})}
                     className={`cursor-pointer border-none w-full rounded-none h-9 flex items-center
                       ${
                         resolvedTheme === "dark"
@@ -132,28 +84,7 @@ const CoinSelect = () => {
                                 }`}
                     />
                     <p className="text-[var(--type-1)] text-xs">{title}</p>
-                  </DropdownMenuItem>
-                </TooltipTrigger>
-                {isSelected && (
-                  <TooltipContent
-                    side="top"
-                    align="center"
-                    className={`  w-full h-12 text-center ${selectedCoin.title === 'Binance' ? 'translate-y-1 ' : '-translate-y-8 '}relative ${
-                                  resolvedTheme === "dark" ? "bg-zinc-800" : "bg-white"
-                                  } border-[var(--tooltip-border)] border shadow-md `
-                              }
-                  >
-                      <div
-                        className="flex items-center justify-between w-full px-1 py-1.5 gap-1.5 rounded-md cursor-pointer"
-                        onClick={handleCopyAddress}
-                      >
-                        <span className=" text-[13px] font-[500] text-primary truncate">{selectedCoin.address}</span>
-                        <Copy className="h-4 w-4 text-[var(--type-2)]" />
-                      </div>
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            </TooltipProvider>
+                  </DropdownMenuItem>      
           )
         })}
         </DropdownMenuContent>

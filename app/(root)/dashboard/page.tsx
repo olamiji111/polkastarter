@@ -45,6 +45,8 @@ const Dashboard = () => {
   const walletAllowlistMap: Record<string, string[]> = {
     "0x1234567890abcdef": ["MemeMarket"], 
     "0xABCDEF9876543210": ["Friendly Giant AI"], 
+    "0xABCDEF987654320": ["Zcash Stablecoin Protocol"],
+
   };
 
 
@@ -413,7 +415,7 @@ const Dashboard = () => {
                                focus-visible:ring-offset-background-1 
                                text-center border-transparent text-black hover:bg-primary-hover text-md
                               h-12 gap-2 px-7 leading-none bg-[var(--color-primary)]"
-                              href="/"
+                              href="/projects"
                             >
                               Go to Projects
                             </Link>

@@ -65,12 +65,13 @@ const ProjectHome = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
   const [friendlyCountdown, setFriendlyCountdown] = useState("");
-  const [memeCountdown, setMemeCountdown] = useState("");
+  const [zeshStableCount, setZeshStableCount] = useState("");
+ 
 
 useEffect(() => {
   const updateCountdowns = () => {
-    setFriendlyCountdown(getCountdownString("2025-11-09", "16:00:00")); // 4:00 PM UTC
-    setMemeCountdown(getCountdownString("2025-11-02", "20:45:00")); // 8:45 PM UTC
+    setFriendlyCountdown(getCountdownString("2025-11-09", "16:00:00")); 
+    setZeshStableCount(getCountdownString("2025-11-07", "20:45:00")); 
   };
 
   updateCountdowns(); // initial call
@@ -214,7 +215,7 @@ useEffect(() => {
                                         >
                                              {status}
                                         </span>
-                                        { name === "KeetaAI" &&(
+                                        {  status.toUpperCase() === "ALLOWLIST OPEN" &&(
                                              <span className={`py-1 px-1 rounded uppercase text-xs font-[500] tracking-[-0.005rem] bg-[rgb(220,239,113)] text-[var(--type-5)] `}>
                                                   reFund
                                              </span>
@@ -241,10 +242,11 @@ useEffect(() => {
                                              
                                              <p className='text-[var(--type-6)] font-[600] text-xs'>
                                                   {name === "Friendly Giant AI"
-                                                       ? friendlyCountdown
-                                                       : name === "MemeMarket"
-                                                       ? memeCountdown
-                                                       : date}
+                                                       ?  friendlyCountdown :
+                                                       name === "Zcash Stablecoin Protocol" ?
+                                                       zeshStableCount :
+                                                      date
+                                                  }
                                              </p>
                                           </div>
                               )}
@@ -290,10 +292,11 @@ useEffect(() => {
                                              
                                              <p className='text-[var(--type-6)] font-[600] text-xs'>
                                                   {name === "Friendly Giant AI"
-                                                       ? friendlyCountdown
-                                                       : name === "MemeMarket"
-                                                       ? memeCountdown
-                                                       : date}
+                                                       ?  friendlyCountdown :
+                                                       name === "Zcash Stablecoin Protocol" ?
+                                                       zeshStableCount :
+                                                      date
+                                                  }
                                              </p>
                          </div>
                               )}
@@ -312,7 +315,7 @@ useEffect(() => {
                                                        className=' w-16 h-16 object-cover rounded-[4px] '
                                                   />
                                              </div> 
-                                             <h2 className='font-[700] text-[var(--type-1)] __className_a17902 whitespace-nowrap text-[17px] tracking-[-0.02rem]'>{name}</h2>
+                                             <h2 className='font-[700] text-[var(--type-1)]   text-[17px] tracking-[-0.02rem]'>{name}</h2>
                                         </div>
                                         <div className='  flex flex-col gap-1.5 items-start justify-start'>
                                              <span
@@ -327,7 +330,7 @@ useEffect(() => {
                                         >
                                              {status}
                                              </span>
-                                              { name === "KeetaAI" &&(
+                                              { status.toUpperCase() === "ALLOWLIST OPEN" &&(
                                              <span className={`py-1 px-1 rounded uppercase text-xs font-[500] tracking-[-0.005rem] bg-[rgb(220,239,113)] text-[var(--type-5)] `}>
                                                   reFund
                                              </span>

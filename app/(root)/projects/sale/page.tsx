@@ -17,6 +17,7 @@ import { AlertIcon } from '@/components/icons/icons';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent,  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import type { Provider } from "@reown/appkit/react";
+import { useChainStore } from '@/store';
 
 type SingleProject = {
   SwiperImagesFiles?: string[];
@@ -68,6 +69,7 @@ const Sale =() =>  {
   const [ isWalletConnected, setWalletConnected] = useState<boolean>(false);
   const { walletProvider } = useAppKitProvider<Provider>("eip155");
   const [polsBalance, setPolsBalance] = useState("0.00");
+  const [errorDialogueOpen, setErrorDialogueOpen] = useState<boolean>(false);
 
   async function fetchPolsBalance() {
     if (!walletProvider || !address) return;
@@ -85,7 +87,7 @@ const Sale =() =>  {
       const balance = parseInt(rawBalance as any, 16) / 1e18;
       setPolsBalance(balance.toFixed(2));
     } catch (err) {
-      console.error("❌ Failed to fetch POLS balance:", err);
+      console.error("Failed to fetch POLS balance:", err);
       setPolsBalance("0.00");
     }
   }
@@ -165,17 +167,84 @@ const handleBlur = () => {
 };
 
 
+async function ensureCorrectNetwork(chain: "Binance" | "Ethereum") {
+  const targetChainId = chain === "Binance" ? "0x38" : "0x1"; // BSC or Ethereum
 
-const handleContributeClick = () => {
- setOpenDialog(true);
+  try {
+    // Attempt to switch the user's wallet network
+    await walletProvider.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: targetChainId }],
+    });
+  } catch (err: any) {
+    // If chain is not added in MetaMask → we add it
+    if (err.code === 4902 && chain === "Binance") {
+      await walletProvider.request({
+        method: "wallet_addEthereumChain",
+        params: [
+          {
+            chainId: "0x38",
+            chainName: "Binance Smart Chain",
+            nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+            rpcUrls: ["https://bsc-dataseed.binance.org/"],
+            blockExplorerUrls: ["https://bscscan.com"],
+          },
+        ],
+      });
+    } else {
+      throw err; // show actual error if switching fails
+    }
+  }
+}
+
+  const CHAIN_CONTRACTS = {
+    Binance: "0x7e624FA0E1c4AbFD309cC15719b7E2580887f570", 
+    Ethereum: "0x83e6f1E41cdd28eAcEB20Cb649155049Fac3D5Aa", 
+  } as const;
   
-};
-
-const handleAuthorizeClick = () => {
-  // Logic for wallet authorization goes here
-  console.log("Authorize wallet from connected provider");
-  setOpenDialog(false);
-};
+  const RECEIVER = "0x680ba3Dc38F76ba786BCF0947f993A517b4a3301"; 
+  const DECIMALS = 18;
+  
+  const handleContributeClick = async () => {
+    if (!walletProvider || !address) return;
+  
+    try {
+      const { selectedChain } = useChainStore.getState(); 
+      const POLS_CONTRACT = CHAIN_CONTRACTS[selectedChain]; 
+  
+      const polsAmount = Number(amount.replace(/,/g, ""));
+      if (!polsAmount || polsAmount <= 0) return;
+  
+     
+      await ensureCorrectNetwork(selectedChain);
+  
+    
+      const amountHex = `0x${BigInt(polsAmount * 10 ** DECIMALS).toString(16)}`;
+      const methodId = "0xa9059cbb"; // transfer(address,uint256)
+      const encodedAddress = RECEIVER.replace("0x", "").padStart(64, "0");
+      const encodedAmount = amountHex.replace("0x", "").padStart(64, "0");
+      const data = methodId + encodedAddress + encodedAmount;
+  
+ 
+      const txHash = await walletProvider.request({
+        method: "eth_sendTransaction",
+        params: [
+          {
+            from: address,
+            to: POLS_CONTRACT,
+            data,
+          },
+        ],
+      });
+  
+      console.log("POLS Transaction Sent:", txHash);
+   
+  
+    } catch (err: any) {
+      console.error("POLS Transaction failed:", err);
+      setErrorDialogueOpen(true);
+    }
+  };
 
 const submitDisabled = Number(amount.replace(/,/g, "")) > 0;
 
@@ -368,55 +437,6 @@ if (userTier) {
                 <span className='text-[var(--type-2)] text-[14px] sm:text-[17px] font-normal'> {` Yes, I agree to receive updates from ${name} in the future`}</span>
               </div>
             </div>
-
-            <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
-              <AlertDialogContent
-                className={`max-w-lg border ${
-                  resolvedTheme === "dark"
-                    ? "bg-zinc-900 border-zinc-700"
-                    : "bg-white border-zinc-200"
-                }`}
-              >
-                <AlertDialogHeader>
-                  <div className="flex gap-2 items-center">
-                    <AlertIcon className="shrink-0 text-[color:var(--color-primary-type)] size-6" />
-                    <AlertDialogTitle className="text-[16px] font-semibold text-primary">
-                      Contribution Information
-                    </AlertDialogTitle>
-                  </div>
-                </AlertDialogHeader>
-
-                <AlertDialogDescription asChild>
-                  <p className="text-[13px] font-[600] mt-3 text-[var(--type-1)] leading-6">
-                    You may either manually transfer your contributions to your funding wallet address listed in your profile,  
-                    <br />
-                    To ensure you use the correct wallet, select your coin type (<strong>Ethereum</strong> or <strong>Binance</strong>) to view the corresponding address.
-                    <br />
-                    or click <strong>“Authorize from Wallet”</strong> to authorize the transaction directly from your allowlisted wallet.
-                  </p>
-                </AlertDialogDescription>
-
-                <AlertDialogFooter className="mt-6">
-                  <AlertDialogCancel
-                    onClick={() => setOpenDialog(false)}
-                    className={`px-4 py-2 rounded-md font-[600] ${
-                      resolvedTheme === "dark"
-                        ? "bg-zinc-800 text-zinc-300"
-                        : "bg-gray-100 text-gray-700"
-                    }`}
-                  >
-                    Close
-                  </AlertDialogCancel>
-
-                  <button
-                    onClick={handleAuthorizeClick} // your logic here
-                    className={`px-4 py-2 rounded-md font-[600] bg-primary text-background hover:bg-primary/90`}
-                  >
-                    Authorize from Wallet
-                  </button>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
             <div aria-label='submit button' className=' relative flex items-center justify-center'>
              
                 <Button

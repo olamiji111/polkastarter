@@ -29,7 +29,10 @@ const SaleConfig: Record<string, boolean> = {
      "Zesh AI Layer": false,
      "KeetaAI": false,
      "Friendly Giant AI": false,
+     "Zcash Stablecoin Protocol":true,
      "MemeMarket":true,
+
+
 };
 
 const FCFS = [
@@ -116,8 +119,8 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
           switch (decodeName) {
             case "Friendly Giant AI":
               return { date: "2025-11-9", time: "16:00:00" };
-            case "MemeMarket":
-              return { date: "2025-11-02", time: "20:45:00" }; // <-- MemeMarket's date/time
+            case "Zcash Stablecoin Protocol":
+               return {date :"2025-11-07", time:"20:45:00"};
             default:
               return null;
           }
@@ -164,7 +167,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
             setTimeCountdown(countdown);
           };
         
-          updateCountdown(); // initial
+          updateCountdown(); 
           const timer = setInterval(updateCountdown, 1000);
         
           return () => clearInterval(timer);
@@ -200,7 +203,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
           "0x1234567890abcdef",
           "0xABCDEF9876543210",
           "0xFEDCBA6543210987",
-          "0xa1b2c3d4e5f678901234567890abcdef12345678", // you can add more depending on the address you want to allowlist 
+          "0xa1b2c3d4e5f678901234567890abcdef12345678",  
         ];
 
 
@@ -387,7 +390,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
         
           return {
             title: typeof investor.title === "string" ? investor.title : "",
-            contents: typeof investor.contents === "string" ? investor.contents : "",           
+            contents: typeof investor.contents === "string"  || Array.isArray(investor.contents) ? investor.contents : "",           
             
             bottomTitle: typeof investor.bottomTitle === "string" ? investor.bottomTitle : "",
           };
@@ -1407,17 +1410,20 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                               (decodeName === "MemeMarket" && SwiperImages[14]) ||
                               (decodeName === "Zesh AI Layer" && SwiperImages[6]) ||
                               (decodeName === "Friendly Giant AI" && SwiperImages[6]) ||
-                              (decodeName === "KeetaAI" && SwiperImages[4])
+                              (decodeName === "KeetaAI" && SwiperImages[4]) ||
+                              (decodeName === "Zcash Stablecoin Protocol" && SwiperImages[1])
                               ) && (
                               <div
                                    onClick={() =>
                                         window.open(
-                                        decodeName === "MemeMarket"
+                                             decodeName === "MemeMarket"
                                              ? SwiperImages[14]
                                              : decodeName === "Zesh AI Layer"
                                              ? SwiperImages[6]
                                              : decodeName === "Friendly Giant AI"
                                              ? SwiperImages[6]
+                                             : decodeName === "Zcash Stablecoin Protocol"
+                                             ? SwiperImages[1]
                                              : SwiperImages[4],
                                         "_blank",
                                         "noopener,noreferrer"
@@ -1433,6 +1439,8 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                              ? SwiperImages[6]
                                              : decodeName === "Friendly Giant AI"
                                              ? SwiperImages[6]
+                                             : decodeName === "Zcash Stablecoin Protocol"
+                                             ? SwiperImages[1]
                                              : SwiperImages[4] 
                                         }
                                         alt={`${name} token utility image`}
@@ -1801,7 +1809,7 @@ const  ProjectInfo = ({params} : {params: Promise<{projectName: string}> }) => {
                                    <p className="text-zinc-500 text-[13px] font-[600] mt-6 tracking-wide">
                                         APPLICATIONS CLOSE IN
                                    </p>
-                                   {(decodeName === "Friendly Giant AI" || decodeName === "MemeMarket") && (
+                                   {(decodeName === "Friendly Giant AI" || decodeName === "Zcash Stablecoin Protocol") && (
                                         <div className='flex flex-row gap-8 w-full items-center justify-center'>
                                         {timeCountdown.map(({ title, number }, idx) => (
                                              <div key={idx} className='flex flex-col gap-0.5 justify-center items-center '>

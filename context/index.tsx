@@ -3,7 +3,7 @@
 import React, { type ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAppKit } from "@reown/appkit/react";
-import { mainnet, arbitrum, sei, polygon, optimismSepolia } from "@reown/appkit/networks";
+import { mainnet, arbitrum, sei, polygon, optimismSepolia, bsc } from "@reown/appkit/networks";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
 
 import { wagmiAdapter, projectId } from "@/config"; 
@@ -25,7 +25,7 @@ const metadata = {
 export const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [mainnet, arbitrum, sei, polygon, optimismSepolia, ],
+  networks: [mainnet, arbitrum, sei, polygon, optimismSepolia, bsc ],
   defaultNetwork: mainnet,
   metadata:metadata,
   features: {

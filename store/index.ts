@@ -28,10 +28,10 @@ export const useProjectStore = create<ProjectStore>((set) => ({
 export type LoginType = "wallet" | "google" | "twitter" | null;
 
 interface WalletState {
-  loginType: LoginType;          // how user logged in
-  walletAddress: string | null;  // blockchain wallet address
-  userName: string | null;       // OAuth username
-  userImage: string | null;      // OAuth avatar
+  loginType: LoginType;          
+  walletAddress: string | null; 
+  userName: string | null;       
+  userImage: string | null;      
   setWallet: (address: string) => void;
   setGoogleUser: (name: string, image: string) => void;
   setTwitterUser: (name: string, image: string) => void;
@@ -87,3 +87,14 @@ export const useWalletStore = create<WalletState>()(
     }
   )
 );
+
+
+interface ChainStore {
+  selectedChain: "Ethereum" | "Binance";
+  setChain: (chain: "Ethereum" | "Binance") => void;
+}
+
+export const useChainStore = create<ChainStore>((set) => ({
+  selectedChain: "Ethereum",
+  setChain: (chain) => set({ selectedChain: chain }),
+}));

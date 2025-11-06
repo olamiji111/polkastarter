@@ -487,6 +487,182 @@ export const UpcomingProjectInfo = [
      },
 
      {
+          "Zcash Stablecoin Protocol" : {
+
+               SwiperImagesFiles:[
+
+                    "/assets/images/Project-info/zcash-stable-a.png",
+                    "/assets/images/Project-info/zcash-stable-b.jpg",
+                   
+                   
+               ],
+
+               Description: {
+                    Highlights:[
+                         "The world’s first privacy-compliant stablecoin protocol.",
+                         "Every $pUSD is backed by verifiable native Zcash ($ZEC) using zero-knowledge proof-of-reserves, ensuring transparent stability without custodians.",
+                         "Privacy x Compliance: zk-powered transactions combined with AI-driven regulatory intelligence.",
+                         "Launch Q1 2026: Introducing a new era of secure, private, and verifiable DeFi",
+                     
+
+                    ],
+                    product:{
+                         title:"",
+                         contents: [
+                              "The First ZK Stablecoin collateralized by $ZEC",
+                              "zkStable is a next-generation ZK stablecoin ecosystem that fuses privacy, stability, and compliance.",
+                              "Users mint $pUSD, a USD-pegged stablecoin fully collateralized by native ZEC via zero-knowledge proofsç",
+                              "The $PRIVACY token governs the protocol, fuels staking, and anchors the AI compliance layer that continuously verifies collateral health and systemic risk.",
+                              "zkStable bridges the gap between privacy maximalists and institutions, creating a verifiably private stablecoin designed for global adoption."
+                              
+                         ],
+                         lists:[
+                             
+                              
+                         ]
+                    },
+                    problem:{
+                         title:"",
+                         contents:[
+                              "Privacy and Stability Doesn't Coexist in Crypto Yet",
+                              "Stablecoins today face a trilemma: centralized coins like USDT sacrifice privacy, while privacy coins like ZEC can’t sustain stable value or regulatory adoption. Users are forced to choose between transparency and freedom. Institutions avoid privacy tools due to compliance issues, and retail users have no stable, private, and verifiable digital money."
+                         ],
+                         list:[
+                              
+
+                         ],
+                         morecontent:"",
+                         bottomTitle:""
+                    },
+                    solution:{
+                         title:"",
+                         contents:[
+                             "ZK-Powered Stability, Backed 1:1 by $ZEC",
+                              "zkStable introduces the world’s first privacy-compliant stablecoin protocol, overcollateralized by native Zcash and verified through zero-knowledge proofs. No wrapping, no custodians. Every dollar minted is provably backed, while transactions remain confidential."
+                         ],
+                         list:[
+                           
+
+                         ],
+                         morecontent:"",
+                         bottomTitle:""
+                    },
+                    Business:{
+                         title:"",
+                         contents:[
+                             "Privacy as a Service with Real Yield.",
+                             "zkStable earns from minting fees, cross-chain swap fees, and institutional compliance services. A portion of protocol fees is used to buy & burn $PRIVACY, creating long-term token scarcity. Future modules will include private RWA vaults and AI compliance oracles, monetizing enterprise-grade privacy infrastructure."
+                         ],
+                         list:[
+                           
+
+                         ],
+                         morecontent:"",
+                         bottomTitle:""
+                    },
+                    market:{
+                         title:"",
+                         contents:[
+                                   "$150B Stablecoin Market",
+                                   "The stablecoin sector exceeds $150B in circulation, yet 0% offer built-in privacy or auditability. zkStable positions itself at the intersection of DeFi, compliance tech, and privacy finance, targeting crypto users, institutions, and fintechs that require stable, confidential, and traceable payments.",
+                                
+                              ],
+                         list:[
+                           
+
+                         ],
+                         morecontent:"",
+                         bottomTitle:""
+                    },
+                    investors:{
+                         title:"",
+                         contents: [ 
+                              "Backed by Builders Who Believe in Freedom.",
+                              
+                         ],
+                             
+                         
+                         bottomTitle:"",
+
+                    },
+
+                    team:{
+                         title:"",
+                         contents:[
+                                  "ZK Engineers, DeFi Veterans, Privacy Pioneers.",
+                                  "The zkStable team blends experience from DeFi ecosystems. Core contributors include smart contract engineers, cryptographers, and compliance experts with backgrounds in zero-knowledge architecture, protocol design, and AI data governance.",
+
+                              ],
+                         list:[
+                           
+
+                         ],
+                         morecontent:"",
+                         bottomTitle:""
+                    },
+                    tokenUtility:{
+                         title:"",
+                         contents:[
+                                   "$PRIVACY - The Engine of the zkStable Economy.",
+                                   "$PRIVACY powers governance, staking, and fee distribution.",
+                                   "Governance: Vote on collateral ratios, AI compliance rules, and new collateral integrations.",
+                                   "Staking: Earn a share of minting and transaction fees.",
+                                   "Burn Mechanism: Protocol automatically buys back and burns $PRIVACY from revenue.",
+                                   "Access: Institutional transparency tools and ZK compliance features are unlocked via $PRIVACY staking tiers.",
+
+                              ],
+                         list:[
+                           
+
+                         ],
+                         morecontent:"",
+                         bottomTitle:""
+                    },
+
+                    link:"zkstable.org"
+
+
+
+
+
+                    
+               },
+
+               TokenSale: {
+                    "Sale Price": "1 PRIVACY = $0.003",
+                    "Sale Start Time": {
+                        date:"November 7th 2025",
+                        time:"9:00 PM - UTC",
+
+                    },
+                    "Sale End Time": {
+                         date:"TBA",
+                         time:""
+                    },
+                    "Token Distribution Time":{
+                         date:"November 7th 2025",
+                         time:"12:00 PM - UTC",
+                    },
+                    "Initial Market Cap": "$380,160",
+                    "Initial Token Circulation":"376,720,000",
+                    "Fully Diluted Valuation":"$3,000,000",
+                    "Total Supply":"c",
+                    "Vesting Schedule": "33% at TGE, 1 month lock, 3 months linear vesting"
+
+
+               },
+               saleSummary:{
+                    "Sale Price": "1 PRIVACY = $0.003",
+                    "Initial Market Cap":"$380,160",
+                    "Initial Token Circulation":"376,720,000",
+                    "Fully Diluted Valuation":"$3,000,000",
+                    "Total Supply":"1,000,000,000",
+                   
+               }
+          }
+     },
+
+     {
           KeetaAI : {
 
                SwiperImagesFiles:[
