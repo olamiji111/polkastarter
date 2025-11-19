@@ -24,12 +24,13 @@ const Header = () => {
   const {resolvedTheme, mounted} = useResolvedTheme();
   const {loginType, walletAddress, userName, userImage, logout, setWallet} = useWalletStore();
   const {address, isConnected} = useAppKitAccount();
+  
  
   
 
   useEffect(() => {
     if (isConnected && address) {
-      console.log("🔄 Restoring wallet:", address);
+      
       setWallet(address);
       setIsPopOverOpen(false);
       

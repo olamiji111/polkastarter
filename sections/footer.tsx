@@ -193,10 +193,10 @@ const Footer = () => {
                        <h3 className="text-[17px] tracking-[-0.04em] font-extrabold text-[color:var(--text-primary)]">
                           {title}
                         </h3>
-                      {Links.map(({ label }) => (
+                      {Links.map(({ label, href }) => (
                        <Link
                         key={`${title}-${label}`}
-                        href="/"
+                        href={href}
                         onClick={(e) => handleDelayedNavigation(e, "/")}
                         className="
                          text-[15px] font-[600]

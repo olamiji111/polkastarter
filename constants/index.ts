@@ -39,15 +39,15 @@ export const popoverSections = [
      {
        title: 'Company',
        links: [
-         { label: 'Launch on Polkastarter' },
-         { label: 'Blog' },
+         { label: 'Launch on Polkastarter', href:"/projects" },
+         { label: 'Blog' , href:"/support"},
        ],
      },
      {
        title: 'Need help?',
        links: [
-         { label: 'Support' },
-         { label: 'Telegram' },
+         { label: 'Support', href:"/support"},
+         { label: 'Telegram' , href:"https://t.me/polkastarter"},
        ],
      },
 ];
@@ -56,51 +56,51 @@ export const footerLinks = [
      {
           title: 'Company',
           Links: [
-               {label:'About us'},
-               {label: 'Blog'},
-               {label:'Council'},
-               {label: 'Press kit'},
-               {label: 'POLS Dashboard'}
+               {label:'About us' , href:"/"},
+               {label: 'Blog', href:"/"},
+               {label:'Council', href:"/"},
+               {label: 'Press kit', href:"/"},
+               {label: 'POLS Dashboard', href:"/"}
           ] 
      },
      {
           title:'Help',
           Links: [
-               {label: 'Support'},
-               {label:'Terms & Conditions'},
-               {label: 'Privacy Policy'}
+               {label: 'Support', href:"/support"},
+               {label:'Terms & Conditions', href:"/"},
+               {label: 'Privacy Policy', href:"/"}
           ]
      },
      {
           title:'Developers',
           Links:[
-               {label:'Documentation'},
-               {label:'Polkastarter.js'},
+               {label:'Documentation', href:"/"},
+               {label:'Polkastarter.js', href:"/"},
           ]
      },
      {
           title:'Information',
                Links:[
-               {label:'Apply for IDO'},    
+               {label:'Apply for IDO', href:"/"},    
           ]
      },
      {
           title:'Products',
           Links:[
-               {label:'Gaming'},
-               {label:'Poolside Podcast'},
-               {label: 'Poolside Accelerator'},
-               {label:'Poolside Hub'}
+               {label:'Gaming', href:"/"},
+               {label:'Poolside Podcast', href:"/"},
+               {label: 'Poolside Accelerator', href:"/"},
+               {label:'Poolside Hub', href:"/"}
           ]
      },
      {
           title:'Resources',
           Links:[
-               {label:'Projects'},
-               {label:'Dashboard'},
-               {label:' Portfolio'},
-               {label: 'Staking'},
-               {label:'Missions'}
+               {label:'Projects', href:"/projects"},
+               {label:'Dashboard', href:"/dashboard"},
+               {label:' Portfolio', href:"/portfolio"},
+               {label: 'Staking', href:"/staking"},
+               {label:'Missions', href:"/missions"}
           ]
      }
 ]
@@ -1252,4 +1252,45 @@ export const polkastarterMissionPaticipants = [
      "/assets/images/Missions/avatar-user.png",
      "/assets/images/Missions/mission-user.png",
      "/assets/images/Missions/avatar-gradient-user.png",
-]
+];
+
+export const MostPoppularHelperLinks = [
+     "Add Polygon (MATIC) Network to MetaMask",
+     "Where to check Application Status",
+     "Prepare for the IDO on Polkastarter: a Step-by-Step Guide",
+     "How to buy $POLS TOKEN",
+     "POLS Power: What is it?",
+     "Add BNB Smart Chain to MetaMask",
+     "POLS Staking: How it works?",
+     "Allowlisting Process for the IDOs on Polkastarter",
+     "On Which Exchanges Can I Buy $POLS Token",
+     "KYC for Polkastarter IDOs"
+];
+
+export const supportFaQ = [
+     {
+         title:"FAQ",
+         articles:"11 articles",
+     },
+     {
+        title:"IDO / NFT SALE",
+        articles:"10 articles" 
+     },
+     {
+          title:"METAMASK SETUP",
+          articles:"6 articles"
+     },
+     {
+          title:"POLS TOKEN",
+          articles:"9 articles",
+
+     },
+     {
+          title:"PROJECT LAUNCH",
+          articles:"2 articles"
+     },
+     {
+          title:"GENERAL",
+          articles:"5 articles"
+     }
+];

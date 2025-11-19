@@ -119,7 +119,7 @@ const Staking = () => {
   const targetChainId = chain === "Binance" ? "0x38" : "0x1"; // BSC or Ethereum
 
   try {
-    // ✅ Attempt to switch the user's wallet network
+    // Attempt to switch the user's wallet network
     await walletProvider.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: targetChainId }],

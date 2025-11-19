@@ -10,7 +10,7 @@ import { modal } from "@/context";
 import { useAppKitWallet } from "@reown/appkit-wallet-button/react";
 import { createSiweMessage } from "@/utils";
 import { useWalletStore } from "@/store";
-import {ethers} from "ethers";
+
 
 interface SignInProps {
   open: boolean;
@@ -40,33 +40,25 @@ const SignIn = ({ open, onOpenChange }: SignInProps) => {
       return;
     }
   
-    useWalletStore.getState().setWallet(address);
-    console.log("✅ Wallet connected:", address);
-  
-    // Check if an EVM provider is injected (MetaMask, Rainbow, WalletConnect via appkit)
-    const ethProvider = window?.ethereum;
-  
-    if (!ethProvider) {
-      console.error("No Ethereum provider found. Probably a Solana wallet.");
-      return;
-    }
-  
     try {
-      // create SIWE message
+      // 1️⃣ Create SIWE message
       const message = createSiweMessage(address);
   
-      // connect to provider and signer
-      const provider = new ethers.BrowserProvider(ethProvider as any);
-      const signer = await provider.getSigner();
+      // 2️⃣ Ask wallet to sign message
+      const signature = await (window as any).ethereum.request({
+        method: "personal_sign",
+        params: [message, address],
+      });
   
-      // request signature
-      console.log("🪶 Asking user to sign SIWE message...");
-      const signature = await signer.signMessage(message);
+      console.log("SIWE message:", message);
+      console.log("Signature:", signature);
   
-      console.log("✅ SIWE Message Signed:", { message, signature });
-      // (you can now verify it client-side or later send to backend)
+      // 3️⃣ Store in Zustand
+      useWalletStore.getState().setWallet(address);
+  
+      console.log("✅ Wallet connected & signed:", address);
     } catch (err) {
-      console.error("❌ Error signing SIWE message:", err);
+      console.error("❌ Error signing message:", err);
     }
   }
   

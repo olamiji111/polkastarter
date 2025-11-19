@@ -76,10 +76,10 @@ const Navitems = () => {
           {popoverSections.map((section) => (
               <div key={section.title} className='flex flex-col'> 
                 <p className='font-[500]  mb-1 px-1 text-[15px]'> {section.title} </p>
-                  {section.links.map(({label}) => (
+                  {section.links.map(({label, href}) => (
                     <Link
                       key={label}
-                      href="/"
+                      href={href}
                       className=' __className_a17902 popover-link tracking-wide leading-snug py-1'
                     >
                       {label}

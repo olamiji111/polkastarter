@@ -125,10 +125,10 @@ const Mobilenavsheet = ({ open, setOpen }: MobilenavsheetProps) => {
                          <div key={section.title} className="flex flex-col items-start  space-x-6 w-full">
                               <p className='font-[600]  mb-1 px-1 text-[15px]'> {section.title} </p>
                                    <div className="flex flex-col gap-1 w-full">
-                                   {section.links.map(({label}) => (
+                                   {section.links.map(({label, href}) => (
                                         <Link 
                                              key={label}
-                                             href="/"
+                                             href={href}
                                              className=' w-[150%] text-[var(--type-2)] popover-link tracking-wide '
                                         >
                                              {label}
