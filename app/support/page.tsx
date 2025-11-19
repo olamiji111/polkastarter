@@ -4,7 +4,7 @@ import {PolkastarterIconWhite} from '@/components/icons/polkastarter';
 import Link from 'next/link';
 import  Image from 'next/image';
 import React, {useEffect, useRef, useState} from 'react'
-import {File, FileArchive, FileArchiveIcon, FileSignature, FileSpreadsheet, Folder} from "lucide-react"
+import {SearchIcon} from "lucide-react"
 import {MostPoppularHelperLinks, supportFaQ} from "@/constants";
 
 declare global {
@@ -89,8 +89,8 @@ const handleSubmit = () => {
                                    className=' focus:shadow-[0_3px_26px_rgba(0,0,0,0.67)] focus:ring-2 focus:ring-[#00BBFF]/10 relative p-5.5 text-white  text-[18px] sm:text-[19px] placeholder:text-zinc-500  w-full ring-offset-0 outline-none h-auto border rounded-[5px] border-[#ffffff21] bg-[#0000004d]'
                                    
                               />
-                              <button className='text-shadow-none  text-[18px] border-none h-auto border-l-[#ffffff21] text-white absolute right-0 top-0 bottom-0 bg-[#5868e9] hover:bg-[rgba(88,104,233,0.792)] px-12 rounded-r-[5px] cursor-pointer '>
-                                   Search
+                              <button className='text-shadow-none  text-[18px] border-none h-auto border-l-[#ffffff21] text-white absolute right-0 top-0 bottom-0 bg-[#5868e9] hover:bg-[rgba(88,104,233,0.792)] px-2 rounded-r-[5px] cursor-pointer '>
+                                   <SearchIcon  className='text-white' strokeWidth={1.5}/>
                               </button>
 
                          </div>
