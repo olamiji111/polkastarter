@@ -86,7 +86,7 @@ const handleSubmit = () => {
                                    name="search"
                                    value={searchQuery}
                                    onChange={(e)=> setSearchQuery(e.target.value)}
-                                   className=' focus:shadow-[0_3px_26px_rgba(0,0,0,0.67)] w-full focus:ring-2 focus:ring-[#00BBFF]/10 relative p-5.5 text-white  text-[18px] sm:text-[19px] placeholder:text-zinc-500 ring-offset-0 outline-none h-auto border rounded-[5px] border-[#ffffff21] bg-[#0000004d]'
+                                   className=' focus:shadow-[0_3px_26px_rgba(0,0,0,0.67)] w-full focus:ring-2 focus:ring-[#00BBFF]/10 relative p-5.5 text-white  text-[18px] sm:text-[19px] placeholder:text-zinc-500 placeholder:text-[14px] placeholder:font-normal ring-offset-0 outline-none h-auto border rounded-[5px] border-[#ffffff21] bg-[#0000004d]'
                                    
                               />
                               <button className='text-shadow-none  text-[18px] border-none h-auto border-l-[#ffffff21] text-white absolute right-0 top-0 bottom-0 bg-[#5868e9] hover:bg-[rgba(88,104,233,0.792)] md:px-12 px-4 rounded-r-[5px] cursor-pointer '>
